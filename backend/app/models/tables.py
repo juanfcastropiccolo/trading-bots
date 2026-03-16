@@ -14,6 +14,17 @@ class AgentConfig(Base):
     max_trade_usd = Column(Float, nullable=False, default=10.0)
     mode = Column(String(20), nullable=False, default="paper")
     is_active = Column(Boolean, default=True)
+    # Risk profile
+    max_position_pct = Column(Float, default=0.50)
+    drawdown_limit_pct = Column(Float, default=0.20)
+    daily_loss_limit_pct = Column(Float, default=0.05)
+    cooldown_minutes = Column(Integer, default=5)
+    max_consecutive_losses = Column(Integer, default=3)
+    rsi_buy_max = Column(Float, default=70.0)
+    rsi_sell_min = Column(Float, default=30.0)
+    # Lifecycle
+    is_protected = Column(Boolean, default=False)
+    is_deleted = Column(Boolean, default=False)
     created_at = Column(DateTime, server_default=func.now())
 
 

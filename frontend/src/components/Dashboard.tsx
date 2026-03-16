@@ -114,8 +114,8 @@ function Dashboard({ agent, ticks }: Props) {
             </GridPanel>
           </div>
           <div key="chart">
-            <GridPanel title="BTC/USDT Chart">
-              <CandlestickChart ticks={ticks} />
+            <GridPanel title={`${agent.symbol} Chart`}>
+              <CandlestickChart ticks={ticks} symbol={agent.symbol} />
             </GridPanel>
           </div>
           <div key="signals">

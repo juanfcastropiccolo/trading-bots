@@ -8,8 +8,10 @@ class AgentResponse(BaseModel):
     symbol: str
     strategy: str
     budget_usd: float
+    max_trade_usd: float
     mode: str
     is_active: bool
+    is_protected: bool
     cash: float | None = None
     equity: float | None = None
     total_pnl: float | None = None
@@ -18,8 +20,36 @@ class AgentResponse(BaseModel):
     loss_count: int | None = None
     total_trades: int | None = None
     max_drawdown: float | None = None
+    # Risk profile
+    max_position_pct: float | None = None
+    drawdown_limit_pct: float | None = None
+    daily_loss_limit_pct: float | None = None
+    cooldown_minutes: int | None = None
+    max_consecutive_losses: int | None = None
+    rsi_buy_max: float | None = None
+    rsi_sell_min: float | None = None
 
     model_config = {"from_attributes": True}
+
+
+class AgentCreateRequest(BaseModel):
+    name: str
+    symbol: str
+    budget_usd: float = 100.0
+    max_trade_usd: float = 10.0
+    risk_profile: str = "moderate"
+    # Optional overrides
+    max_position_pct: float | None = None
+    drawdown_limit_pct: float | None = None
+    daily_loss_limit_pct: float | None = None
+    cooldown_minutes: int | None = None
+    max_consecutive_losses: int | None = None
+    rsi_buy_max: float | None = None
+    rsi_sell_min: float | None = None
+
+
+class AddFundsRequest(BaseModel):
+    amount: float
 
 
 class TradeResponse(BaseModel):

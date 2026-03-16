@@ -25,7 +25,8 @@ class StrategyEvalAgent(BaseAgent):
             yield Event(author=self.name)
             return
 
-        signal = evaluate_trend_following(features, prev_features)
+        agent_config = ctx.session.state.get("agent_config", {})
+        signal = evaluate_trend_following(features, prev_features, params=agent_config)
         ctx.session.state["signal"] = signal
 
         logger.info(f"Signal: {signal['direction']} (confidence={signal['confidence']})")

@@ -16,6 +16,7 @@ import type { TickData } from "../App";
 
 interface Props {
   ticks: TickData[];
+  symbol?: string;
 }
 
 interface Candle {
@@ -106,7 +107,7 @@ function calcRSI(closes: number[], period: number): (number | null)[] {
   return result;
 }
 
-export default function CandlestickChart({ ticks }: Props) {
+export default function CandlestickChart({ ticks, symbol }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<IChartApi | null>(null);
   const candleSeriesRef = useRef<ISeriesApi<"Candlestick"> | null>(null);
@@ -221,14 +222,16 @@ export default function CandlestickChart({ ticks }: Props) {
   // Fetch historical candles when timeframe changes
   useEffect(() => {
     let cancelled = false;
-    fetch(`/api/market/BTC-USDT/candles?timeframe=${timeframe}&limit=500`)
+    const pair = (symbol ?? "BTC/USDT").replace("/", "-");
+    setHistoricalCandles([]);
+    fetch(`/api/market/${pair}/candles?timeframe=${timeframe}&limit=500`)
       .then((r) => r.json())
       .then((data: Candle[]) => {
         if (!cancelled) setHistoricalCandles(data);
       })
       .catch(() => {});
     return () => { cancelled = true; };
-  }, [timeframe]);
+  }, [timeframe, symbol]);
 
   // Update chart data
   useEffect(() => {
