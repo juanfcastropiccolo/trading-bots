@@ -5,6 +5,8 @@ import threading
 import time as _time
 from datetime import datetime, timedelta
 
+from app.config import settings
+
 logger = logging.getLogger(__name__)
 
 # Minimum seconds between any API call
@@ -50,7 +52,8 @@ class RateLimiter:
 
 class ExchangeService:
     def __init__(self):
-        self.exchange = ccxt.binance({"enableRateLimit": True})
+        exchange_cls = getattr(ccxt, settings.exchange_id)
+        self.exchange = exchange_cls({"enableRateLimit": True})
         self._limiter = RateLimiter()
 
     def fetch_ohlcv(

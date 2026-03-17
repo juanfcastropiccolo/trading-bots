@@ -10,6 +10,9 @@ class Settings(BaseSettings):
     # Database
     database_url: str = "sqlite:///data/trading.db"
 
+    # Exchange
+    exchange_id: str = "binance"
+
     # Trading
     default_symbol: str = "BTC/USDT"
     default_timeframe: str = "1m"
