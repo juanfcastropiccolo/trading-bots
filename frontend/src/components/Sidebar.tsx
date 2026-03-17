@@ -10,9 +10,10 @@ interface Props {
   onAddAgent: () => void;
   onDeleteAgent: (id: number) => void;
   onAddFunds: (id: number) => void;
+  onToggleAgent: (id: number) => void;
 }
 
-export default function Sidebar({ agents, selectedId, onSelect, onAddAgent, onDeleteAgent, onAddFunds }: Props) {
+export default function Sidebar({ agents, selectedId, onSelect, onAddAgent, onDeleteAgent, onAddFunds, onToggleAgent }: Props) {
   const [collapsed, setCollapsed] = useState(() => {
     try {
       return localStorage.getItem(STORAGE_KEY) === "true";
@@ -34,6 +35,11 @@ export default function Sidebar({ agents, selectedId, onSelect, onAddAgent, onDe
     }
   };
 
+  const handleToggle = (e: React.MouseEvent, id: number) => {
+    e.stopPropagation();
+    onToggleAgent(id);
+  };
+
   const handleFunds = (e: React.MouseEvent, id: number) => {
     e.stopPropagation();
     onAddFunds(id);
@@ -45,17 +51,17 @@ export default function Sidebar({ agents, selectedId, onSelect, onAddAgent, onDe
       style={{ width: collapsed ? 48 : 220 }}
     >
       {/* Header: collapse toggle */}
-      <div className="flex items-center justify-center border-b border-gray-800 shrink-0">
+      <div className="flex items-center border-b border-gray-800 shrink-0">
+        {!collapsed && (
+          <span className="flex-1 pl-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Agents</span>
+        )}
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="p-2.5 text-gray-500 hover:text-gray-300 transition-colors text-xs"
+          className="p-2.5 text-gray-500 hover:text-gray-300 transition-colors text-xs ml-auto"
           title={collapsed ? "Expand" : "Collapse"}
         >
           {collapsed ? "\u25B6" : "\u25C0"}
         </button>
-        {!collapsed && (
-          <span className="flex-1 text-xs font-semibold text-gray-500 uppercase tracking-wider">Agents</span>
-        )}
       </div>
 
       {/* Agent list */}
@@ -95,6 +101,19 @@ export default function Sidebar({ agents, selectedId, onSelect, onAddAgent, onDe
                     </div>
                   </div>
                   <div className="flex items-center gap-0.5 shrink-0">
+                    <button
+                      onClick={(e) => handleToggle(e, agent.id)}
+                      className={`p-1 rounded transition-colors ${
+                        agent.is_active
+                          ? "text-green-400 hover:text-red-400 hover:bg-gray-700"
+                          : "text-gray-600 hover:text-green-400 hover:bg-gray-700"
+                      }`}
+                      title={agent.is_active ? "Pause agent" : "Resume agent"}
+                    >
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5.636 5.636a9 9 0 1012.728 0M12 3v9" />
+                      </svg>
+                    </button>
                     <button
                       onClick={(e) => handleFunds(e, agent.id)}
                       className="p-1 rounded text-gray-600 hover:text-yellow-400 hover:bg-gray-700 transition-colors"

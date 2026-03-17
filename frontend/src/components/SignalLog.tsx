@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import type { TickData } from "../App";
+import { API_BASE } from "../config";
 
 interface Props {
   ticks: TickData[];
@@ -20,24 +21,58 @@ interface HistoricalSignal {
 
 type DirectionFilter = "ALL" | "BUY" | "SELL" | "HOLD";
 
+const PAGE_SIZE = 50;
+
 export default function SignalLog({ ticks, agentId }: Props) {
   const [historicalSignals, setHistoricalSignals] = useState<HistoricalSignal[]>([]);
   const [dirFilter, setDirFilter] = useState<DirectionFilter>("ALL");
   const [showLLM, setShowLLM] = useState(true);
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
+  // Fetch initial page
   useEffect(() => {
     if (!agentId) return;
-    fetch(`/api/agents/${agentId}/signals?limit=50`)
+    setHistoricalSignals([]);
+    setHasMore(true);
+    fetch(`${API_BASE}/api/agents/${agentId}/signals?limit=${PAGE_SIZE}&offset=0`)
       .then((r) => r.json())
-      .then((data: HistoricalSignal[]) => setHistoricalSignals(data))
+      .then((data: HistoricalSignal[]) => {
+        setHistoricalSignals(data);
+        setHasMore(data.length >= PAGE_SIZE);
+      })
       .catch(() => {});
   }, [agentId]);
+
+  // Load more when scrolling to bottom
+  const loadMore = useCallback(() => {
+    if (!agentId || loading || !hasMore) return;
+    setLoading(true);
+    const offset = historicalSignals.length;
+    fetch(`${API_BASE}/api/agents/${agentId}/signals?limit=${PAGE_SIZE}&offset=${offset}`)
+      .then((r) => r.json())
+      .then((data: HistoricalSignal[]) => {
+        setHistoricalSignals((prev) => [...prev, ...data]);
+        setHasMore(data.length >= PAGE_SIZE);
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, [agentId, loading, hasMore, historicalSignals.length]);
+
+  const handleScroll = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    // Load more when within 100px of bottom
+    if (el.scrollHeight - el.scrollTop - el.clientHeight < 100) {
+      loadMore();
+    }
+  }, [loadMore]);
 
   // Build unified signal list
   const liveSignals = ticks
     .filter((t) => t.signal !== null)
-    .reverse()
-    .slice(0, 50);
+    .reverse();
 
   type UnifiedSignal = {
     key: string;
@@ -50,35 +85,49 @@ export default function SignalLog({ ticks, agentId }: Props) {
     timestamp: string;
   };
 
-  const signals: UnifiedSignal[] = liveSignals.length > 0
-    ? liveSignals.map((t, i) => ({
-        key: `live-${i}`,
-        direction: t.signal!.direction,
-        confidence: t.signal!.confidence,
-        reason: t.signal!.reason,
-        llmReasoning: t.llm_reasoning,
-        riskApproved: t.risk?.approved ?? null,
-        riskReason: t.risk?.rejection_reason ?? null,
-        timestamp: t.timestamp,
-      }))
-    : historicalSignals.map((s) => ({
-        key: `hist-${s.id}`,
-        direction: s.direction,
-        confidence: s.confidence,
-        reason: s.reason,
-        llmReasoning: s.llm_reasoning,
-        riskApproved: s.risk_approved,
-        riskReason: s.risk_reason,
-        timestamp: s.created_at,
-      }));
+  // Combine live (newest) + historical, dedup by timestamp (live wins)
+  const allSignals: UnifiedSignal[] = [
+    ...liveSignals.map((t, i) => ({
+      key: `live-${i}`,
+      direction: t.signal!.direction,
+      confidence: t.signal!.confidence,
+      reason: t.signal!.reason,
+      llmReasoning: t.llm_reasoning,
+      riskApproved: t.risk?.approved ?? null,
+      riskReason: t.risk?.rejection_reason ?? null,
+      timestamp: t.timestamp,
+    })),
+    ...historicalSignals.map((s) => ({
+      key: `hist-${s.id}`,
+      direction: s.direction,
+      confidence: s.confidence,
+      reason: s.reason,
+      llmReasoning: s.llm_reasoning,
+      riskApproved: s.risk_approved,
+      riskReason: s.risk_reason,
+      timestamp: s.created_at,
+    })),
+  ];
+
+  // Sort newest first, then deduplicate by timestamp
+  allSignals.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+  const seen = new Set<string>();
+  const signals: UnifiedSignal[] = [];
+  for (const s of allSignals) {
+    const ts = new Date(s.timestamp).getTime().toString();
+    if (!seen.has(ts)) {
+      seen.add(ts);
+      signals.push(s);
+    }
+  }
 
   const filtered = signals.filter(
     (s) => dirFilter === "ALL" || s.direction === dirFilter
   );
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-3">
+    <div className="flex flex-col h-full">
+      <div className="flex items-center justify-between mb-3 shrink-0">
         <h2 className="text-sm font-semibold text-gray-400">Signal Log</h2>
         <div className="flex items-center gap-2">
           <div className="flex gap-1">
@@ -115,10 +164,14 @@ export default function SignalLog({ ticks, agentId }: Props) {
           {signals.length === 0 ? "No signals yet. Waiting for first tick..." : "No signals match filter."}
         </p>
       ) : (
-        <div className="space-y-2">
+        <div ref={scrollRef} onScroll={handleScroll} className="flex-1 overflow-y-auto space-y-2 min-h-0">
           {filtered.map((sig) => (
             <SignalCard key={sig.key} sig={sig} showLLM={showLLM} />
           ))}
+          {loading && <p className="text-gray-500 text-xs text-center py-2">Loading more...</p>}
+          {!hasMore && filtered.length > PAGE_SIZE && (
+            <p className="text-gray-600 text-xs text-center py-2">No more signals</p>
+          )}
         </div>
       )}
     </div>

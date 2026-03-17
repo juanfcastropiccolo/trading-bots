@@ -30,7 +30,7 @@ def check_risk(
     max_position_pct = agent_config.get("max_position_pct", 0.50)
     drawdown_limit_pct = agent_config.get("drawdown_limit_pct", 0.20)
     daily_loss_limit_pct = agent_config.get("daily_loss_limit_pct", 0.05)
-    cooldown_minutes = agent_config.get("cooldown_minutes", 5)
+    cooldown_minutes = agent_config.get("cooldown_minutes", 2)
     max_consecutive_losses = agent_config.get("max_consecutive_losses", 3)
 
     # 1. Data completeness

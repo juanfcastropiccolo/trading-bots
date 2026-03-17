@@ -1,4 +1,5 @@
 import logging
+import os
 from contextlib import asynccontextmanager
 from pathlib import Path
 from dotenv import load_dotenv
@@ -6,10 +7,15 @@ from dotenv import load_dotenv
 # Load .env into process environment BEFORE any other imports use it (LiteLLM needs this)
 load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
+# Configure LiteLLM retries for transient errors (Anthropic 529 overloaded)
+import litellm
+litellm.num_retries = 3
+litellm.retry_after = 5  # seconds between retries
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.database import engine, Base
+from app.database import engine, Base, _is_sqlite
 from app.websocket_manager import ws_manager
 from app.adk.agents.persistence import set_ws_manager
 from app.adk.loop import start_loop, request_shutdown
@@ -25,8 +31,11 @@ logger = logging.getLogger(__name__)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup
-    logger.info("Creating database tables...")
-    Base.metadata.create_all(bind=engine)
+    if _is_sqlite:
+        logger.info("Creating database tables (SQLite)...")
+        Base.metadata.create_all(bind=engine)
+    else:
+        logger.info("Using PostgreSQL — tables managed via schema.sql")
 
     # Wire up WebSocket manager to persistence agent
     set_ws_manager(ws_manager)
@@ -49,9 +58,10 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+cors_origins = os.getenv("CORS_ORIGIN", "*").split(",")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

@@ -114,9 +114,11 @@ function Dashboard({ agent, ticks }: Props) {
             </GridPanel>
           </div>
           <div key="chart">
-            <GridPanel title={`${agent.symbol} Chart`}>
-              <CandlestickChart ticks={ticks} symbol={agent.symbol} />
-            </GridPanel>
+            <div key={`chart-${agent.id}`} className="h-full">
+              <GridPanel title={`${agent.symbol} Chart`}>
+                <CandlestickChart ticks={ticks} symbol={agent.symbol} />
+              </GridPanel>
+            </div>
           </div>
           <div key="signals">
             <GridPanel title="Signals">

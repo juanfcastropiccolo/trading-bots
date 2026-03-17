@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from "react";
+import { WS_BASE } from "../config";
 
 export function useWebSocket(url: string) {
   const [lastMessage, setLastMessage] = useState<string | null>(null);
@@ -7,8 +8,13 @@ export function useWebSocket(url: string) {
   const reconnectTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   const connect = useCallback(() => {
-    const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-    const wsUrl = `${protocol}//${window.location.host}${url}`;
+    let wsUrl: string;
+    if (WS_BASE) {
+      wsUrl = `${WS_BASE}${url}`;
+    } else {
+      const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+      wsUrl = `${protocol}//${window.location.host}${url}`;
+    }
     const ws = new WebSocket(wsUrl);
 
     ws.onopen = () => {

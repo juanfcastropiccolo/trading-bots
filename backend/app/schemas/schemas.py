@@ -20,6 +20,10 @@ class AgentResponse(BaseModel):
     loss_count: int | None = None
     total_trades: int | None = None
     max_drawdown: float | None = None
+    # Position info
+    position_qty: float | None = None
+    position_side: str | None = None
+    entry_price: float | None = None
     # Risk profile
     max_position_pct: float | None = None
     drawdown_limit_pct: float | None = None

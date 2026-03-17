@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.models import AgentConfig, PortfolioSnapshot
+from app.models import AgentConfig, PortfolioSnapshot, Order, Position
 from app.schemas.schemas import AgentResponse, AgentCreateRequest, AddFundsRequest
 from app.adk.loop import add_agent_to_loop, remove_agent_from_loop
 
@@ -16,7 +16,7 @@ RISK_PROFILES = {
     ),
     "moderate": dict(
         max_position_pct=0.50, drawdown_limit_pct=0.20,
-        daily_loss_limit_pct=0.05, cooldown_minutes=5,
+        daily_loss_limit_pct=0.05, cooldown_minutes=2,
         max_consecutive_losses=3, rsi_buy_max=70.0, rsi_sell_min=30.0,
     ),
     "aggressive": dict(
@@ -34,6 +34,10 @@ def _agent_to_response(agent: AgentConfig, db: Session) -> AgentResponse:
         .order_by(PortfolioSnapshot.id.desc())
         .first()
     )
+    # Use actual Order count from DB (authoritative, survives restarts)
+    actual_total_trades = db.query(Order).filter(Order.agent_id == agent.id).count()
+    # Position info
+    pos = db.query(Position).filter(Position.agent_id == agent.id).first()
     return AgentResponse(
         id=agent.id,
         name=agent.name,
@@ -50,8 +54,11 @@ def _agent_to_response(agent: AgentConfig, db: Session) -> AgentResponse:
         total_pnl_pct=snap.total_pnl_pct if snap else 0,
         win_count=snap.win_count if snap else 0,
         loss_count=snap.loss_count if snap else 0,
-        total_trades=snap.total_trades if snap else 0,
+        total_trades=actual_total_trades,
         max_drawdown=snap.max_drawdown if snap else 0,
+        position_qty=pos.quantity if pos else 0,
+        position_side=pos.side if pos else "flat",
+        entry_price=pos.entry_price if pos else 0,
         max_position_pct=agent.max_position_pct,
         drawdown_limit_pct=agent.drawdown_limit_pct,
         daily_loss_limit_pct=agent.daily_loss_limit_pct,
@@ -150,4 +157,19 @@ def add_funds(agent_id: int, req: AddFundsRequest, db: Session = Depends(get_db)
         snap.equity += req.amount
         db.commit()
 
+    return _agent_to_response(agent, db)
+
+
+@router.patch("/{agent_id}/toggle", response_model=AgentResponse)
+async def toggle_agent(agent_id: int, db: Session = Depends(get_db)):
+    agent = db.query(AgentConfig).filter(AgentConfig.id == agent_id).first()
+    if not agent or agent.is_deleted:
+        raise HTTPException(status_code=404, detail="Agent not found")
+    agent.is_active = not agent.is_active
+    db.commit()
+    db.refresh(agent)
+    if agent.is_active:
+        await add_agent_to_loop(agent_id)
+    else:
+        await remove_agent_from_loop(agent_id)
     return _agent_to_response(agent, db)

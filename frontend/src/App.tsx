@@ -1,9 +1,11 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useWebSocket } from "./hooks/useWebSocket";
+import { API_BASE } from "./config";
 import Dashboard from "./components/Dashboard";
 import StatusBar from "./components/StatusBar";
 import Sidebar from "./components/Sidebar";
 import AddAgentModal from "./components/AddAgentModal";
+import RefreshButton from "./components/RefreshButton";
 
 export interface TickData {
   agent_id: number;
@@ -21,6 +23,9 @@ export interface TickData {
     win_count: number;
     loss_count: number;
     total_trades: number;
+    position_qty: number;
+    position_side: string;
+    entry_price: number;
   } | null;
   llm_reasoning: string | null;
   timestamp: string;
@@ -44,6 +49,9 @@ export interface AgentData {
   loss_count: number;
   total_trades: number;
   max_drawdown: number;
+  position_qty: number;
+  position_side: string;
+  entry_price: number;
 }
 
 export default function App() {
@@ -51,20 +59,32 @@ export default function App() {
   const [selectedAgentId, setSelectedAgentId] = useState<number | null>(null);
   const [ticksByAgent, setTicksByAgent] = useState<Record<number, TickData[]>>({});
   const [showAddModal, setShowAddModal] = useState(false);
+  const [autoRefreshInterval, setAutoRefreshInterval] = useState(0);
   const { lastMessage, isConnected } = useWebSocket("/ws/live");
+  const selectedAgentIdRef = useRef(selectedAgentId);
+  selectedAgentIdRef.current = selectedAgentId;
 
-  // Fetch agents on mount
-  useEffect(() => {
-    fetch("/api/agents")
+  const fetchAgents = useCallback(() => {
+    fetch(`${API_BASE}/api/agents`)
       .then((r) => r.json())
       .then((data: AgentData[]) => {
         setAgents(data);
-        if (data.length > 0 && !selectedAgentId) {
+        if (data.length > 0 && selectedAgentIdRef.current === null) {
           setSelectedAgentId(data[0].id);
         }
       })
       .catch(() => {});
   }, []);
+
+  // Fetch agents on mount
+  useEffect(() => { fetchAgents(); }, [fetchAgents]);
+
+  // Auto-refresh interval
+  useEffect(() => {
+    if (autoRefreshInterval <= 0) return;
+    const id = setInterval(fetchAgents, autoRefreshInterval * 1000);
+    return () => clearInterval(id);
+  }, [autoRefreshInterval, fetchAgents]);
 
   // Process WS messages — route by agent_id
   useEffect(() => {
@@ -95,6 +115,9 @@ export default function App() {
                     win_count: tick.portfolio!.win_count,
                     loss_count: tick.portfolio!.loss_count,
                     total_trades: tick.portfolio!.total_trades,
+                    position_qty: tick.portfolio!.position_qty,
+                    position_side: tick.portfolio!.position_side,
+                    entry_price: tick.portfolio!.entry_price,
                   }
                 : a
             )
@@ -111,7 +134,7 @@ export default function App() {
 
   const handleAddAgent = useCallback(async (data: Record<string, unknown>) => {
     try {
-      const res = await fetch("/api/agents", {
+      const res = await fetch(`${API_BASE}/api/agents`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -127,7 +150,7 @@ export default function App() {
 
   const handleDeleteAgent = useCallback(async (id: number) => {
     try {
-      const res = await fetch(`/api/agents/${id}`, { method: "DELETE" });
+      const res = await fetch(`${API_BASE}/api/agents/${id}`, { method: "DELETE" });
       if (res.ok) {
         setAgents((prev) => prev.filter((a) => a.id !== id));
         setSelectedAgentId((prev) => {
@@ -141,13 +164,23 @@ export default function App() {
     } catch {}
   }, [agents]);
 
+  const handleToggleAgent = useCallback(async (id: number) => {
+    try {
+      const res = await fetch(`${API_BASE}/api/agents/${id}/toggle`, { method: "PATCH" });
+      if (res.ok) {
+        const updated: AgentData = await res.json();
+        setAgents((prev) => prev.map((a) => (a.id === id ? updated : a)));
+      }
+    } catch {}
+  }, []);
+
   const handleAddFunds = useCallback(async (id: number) => {
     const input = prompt("Amount (USD) to add:");
     if (!input) return;
     const amount = parseFloat(input);
     if (isNaN(amount) || amount <= 0) return;
     try {
-      const res = await fetch(`/api/agents/${id}/add-funds`, {
+      const res = await fetch(`${API_BASE}/api/agents/${id}/add-funds`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ amount }),
@@ -169,6 +202,11 @@ export default function App() {
         <div className="flex items-center gap-3">
           <StatusBar isConnected={isConnected} lastTick={lastTick} />
           <Dashboard.ResetButton />
+          <RefreshButton
+            onRefresh={fetchAgents}
+            interval={autoRefreshInterval}
+            onIntervalChange={setAutoRefreshInterval}
+          />
         </div>
       </header>
       <main className="flex-1 flex overflow-auto">
@@ -179,6 +217,7 @@ export default function App() {
           onAddAgent={() => setShowAddModal(true)}
           onDeleteAgent={handleDeleteAgent}
           onAddFunds={handleAddFunds}
+          onToggleAgent={handleToggleAgent}
         />
         <div className="flex-1 overflow-auto">
           <Dashboard agent={selectedAgent} ticks={selectedTicks} />

@@ -13,6 +13,7 @@ import {
   type ISeriesMarkersPluginApi,
 } from "lightweight-charts";
 import type { TickData } from "../App";
+import { API_BASE } from "../config";
 
 interface Props {
   ticks: TickData[];
@@ -120,6 +121,11 @@ export default function CandlestickChart({ ticks, symbol }: Props) {
   const [timeframe, setTimeframe] = useState("1h");
   const [historicalCandles, setHistoricalCandles] = useState<Candle[]>([]);
   const [showIndicators, setShowIndicators] = useState(true);
+  const shouldFitRef = useRef(true);
+
+  const fitContent = useCallback(() => {
+    chartRef.current?.timeScale().fitContent();
+  }, []);
 
   // Create chart once
   useEffect(() => {
@@ -224,10 +230,13 @@ export default function CandlestickChart({ ticks, symbol }: Props) {
     let cancelled = false;
     const pair = (symbol ?? "BTC/USDT").replace("/", "-");
     setHistoricalCandles([]);
-    fetch(`/api/market/${pair}/candles?timeframe=${timeframe}&limit=500`)
+    fetch(`${API_BASE}/api/market/${pair}/candles?timeframe=${timeframe}&limit=500`)
       .then((r) => r.json())
       .then((data: Candle[]) => {
-        if (!cancelled) setHistoricalCandles(data);
+        if (!cancelled) {
+          shouldFitRef.current = true;
+          setHistoricalCandles(data);
+        }
       })
       .catch(() => {});
     return () => { cancelled = true; };
@@ -318,6 +327,11 @@ export default function CandlestickChart({ ticks, symbol }: Props) {
       rsi70Ref.current!.setData([]);
       rsi30Ref.current!.setData([]);
     }
+    // Auto-fit after new data loads (symbol change, timeframe change)
+    if (shouldFitRef.current) {
+      shouldFitRef.current = false;
+      chartRef.current?.timeScale().fitContent();
+    }
   }, [historicalCandles, ticks, timeframe, showIndicators]);
 
   return (
@@ -338,6 +352,16 @@ export default function CandlestickChart({ ticks, symbol }: Props) {
             </button>
           ))}
         </div>
+        <div className="h-4 w-px bg-gray-700" />
+        <button
+          onClick={() => chartRef.current?.timeScale().fitContent()}
+          className="px-2 py-1 text-xs rounded font-medium transition-colors bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-gray-200"
+          title="Fit all candles"
+        >
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9m11.25-5.25v4.5m0-4.5h-4.5m4.5 0L15 9m-11.25 11.25v-4.5m0 4.5h4.5m-4.5 0L9 15m11.25 5.25v-4.5m0 4.5h-4.5m4.5 0L15 15" />
+          </svg>
+        </button>
         <div className="h-4 w-px bg-gray-700" />
         <button
           onClick={() => setShowIndicators(!showIndicators)}
