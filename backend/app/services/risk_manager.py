@@ -51,9 +51,10 @@ def check_risk(
         checks["max_position_ok"] = False
         reasons.append(f"Position {position_value:.2f} exceeds {max_position_pct:.0%} of budget")
 
-    # 4. Drawdown limit
+    # 4. Drawdown limit (vs peak equity, not initial budget)
     equity = portfolio.get("equity", budget)
-    drawdown = (budget - equity) / budget if budget > 0 else 0
+    peak_equity = max(portfolio.get("peak_equity", budget), equity)
+    drawdown = (peak_equity - equity) / peak_equity if peak_equity > 0 else 0
     if drawdown >= drawdown_limit_pct:
         checks["drawdown_ok"] = False
         reasons.append(f"Drawdown {drawdown:.1%} exceeds {drawdown_limit_pct:.0%} limit")
@@ -74,10 +75,14 @@ def check_risk(
                 checks["cooldown_ok"] = False
                 reasons.append(f"Cooldown: less than {cooldown_minutes} min since last trade")
 
-    # 7. Consecutive losses
+    # 7. Consecutive losses (only closed trades carry realized_pnl; buys don't
+    # reset nor extend the streak)
     consecutive_losses = 0
     for order in reversed(recent_orders):
-        if order.get("pnl", 0) < 0:
+        pnl = order.get("realized_pnl", order.get("pnl"))
+        if pnl is None:
+            continue
+        if pnl < 0:
             consecutive_losses += 1
         else:
             break

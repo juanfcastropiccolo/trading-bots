@@ -239,10 +239,18 @@ async def _run_single_agent_loop(agent_id: int):
 
     recent_orders: list[dict] = []
     tick_count = 0
+    current_day = datetime.now().date()
 
     while not _shutdown:
         tick_count += 1
         logger.info(f"[{symbol}] === Tick #{tick_count} @ {datetime.now().isoformat()} ===")
+
+        # Reset daily PnL at day boundary so the daily-loss limit is truly daily
+        today = datetime.now().date()
+        if today != current_day:
+            current_day = today
+            portfolio["daily_pnl"] = 0.0
+            logger.info(f"[{symbol}] New day: daily_pnl reset")
 
         try:
             session = await session_service.create_session(
