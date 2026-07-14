@@ -30,6 +30,27 @@ BUDGET = 100.0
 
 STATE_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "momentum_state.json")
 
+# Lista de exchanges separada por comas; se intenta en orden hasta que uno
+# devuelva las velas de todos los símbolos (binance geo-bloquea IPs de EE.UU.).
+EXCHANGE_IDS = os.environ.get("EXCHANGE_ID", "binance").split(",")
+
+
+def fetch_closes() -> tuple[dict, dict, str]:
+    last_err = None
+    for exid in [e.strip() for e in EXCHANGE_IDS if e.strip()]:
+        try:
+            ex = getattr(ccxt, exid)({"enableRateLimit": True})
+            closes = {}
+            for s in SYMBOLS:
+                candles = ex.fetch_ohlcv(s, timeframe="1d", limit=TREND_W + 5)
+                closes[s] = [c[4] for c in candles]
+            prices = {s: series[-1] for s, series in closes.items()}
+            return closes, prices, exid
+        except Exception as e:
+            last_err = e
+            print(f"⚠️  {exid} falló ({type(e).__name__}: {str(e)[:100]}); pruebo el siguiente…")
+    raise SystemExit(f"Ningún exchange disponible de {EXCHANGE_IDS}: {last_err}")
+
 
 def load_state() -> dict:
     if os.path.exists(STATE_PATH):
@@ -56,13 +77,7 @@ def main():
         print(f"Ya corrió hoy ({today}). Usá --force para repetir.")
         return
 
-    ex = ccxt.binance({"enableRateLimit": True})
-    closes, prices = {}, {}
-    for s in SYMBOLS:
-        candles = ex.fetch_ohlcv(s, timeframe="1d", limit=TREND_W + 5)
-        series = [c[4] for c in candles]
-        closes[s] = series
-        prices[s] = series[-1]
+    closes, prices, exid = fetch_closes()
 
     # ranking por momentum 30d + filtro SMA100
     scores = {}
@@ -76,7 +91,7 @@ def main():
     ranked = sorted(scores.items(), key=lambda kv: -kv[1]["momentum"])
     target = [s for s, sc in ranked[:TOP_K] if sc["above_trend"]]
 
-    print(f"=== Momentum rotation — {today} ===")
+    print(f"=== Momentum rotation — {today} (datos: {exid}) ===")
     print(f"{'símbolo':10s} {'mom30d':>8s}  sobre_SMA100")
     for s, sc in ranked:
         mark = " ← TARGET" if s in target else ""
