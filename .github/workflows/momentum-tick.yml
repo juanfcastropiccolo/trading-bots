@@ -1,0 +1,49 @@
+name: momentum-tick
+
+on:
+  schedule:
+    - cron: "5 0 * * *"   # diario 00:05 UTC
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/momentum-tick.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: momentum-tick
+  cancel-in-progress: false
+
+jobs:
+  tick:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install ccxt
+
+      # Los runners de GitHub están en EE.UU.: Binance geo-bloquea, por eso
+      # la lista arranca en kraken.
+      - name: Tick diario
+        run: EXCHANGE_ID="kraken,kucoin,mexc,gate" python backend/scripts/momentum_paper.py
+
+      - name: Regenerar PAPER_REPORT.md
+        run: python backend/scripts/render_paper_report.py
+
+      - name: Commit y push del estado
+        run: |
+          git config user.name "juanfcastropiccolo"
+          git config user.email "juanfcastropiccolo@gmail.com"
+          git add -f backend/data/momentum_state.json PAPER_REPORT.md
+          if git diff --cached --quiet; then
+            echo "Sin cambios que commitear (tick ya registrado hoy)."
+          else
+            git commit -m "chore: momentum paper state $(date -u +%F)"
+            git push origin main
+          fi
