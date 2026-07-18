@@ -26,7 +26,7 @@ jobs:
         with:
           python-version: "3.12"
 
-      - run: pip install ccxt
+      - run: pip install ccxt pandas numpy
 
       # Los runners de GitHub están en EE.UU.: Binance geo-bloquea, por eso
       # la lista arranca en kraken.
