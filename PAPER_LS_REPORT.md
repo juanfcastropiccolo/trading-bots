@@ -1,6 +1,6 @@
 # Momentum Long/Short (perpetuos) — Paper Trading
 
-_Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-07-25 (tick automático vía GitHub Actions). Pesos con signo (− = short), funding real, costos 0.05% por lado, palanca 1x._
+_Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-07-26 (tick automático vía GitHub Actions). Pesos con signo (− = short), funding real, costos 0.05% por lado, palanca 1x._
 
 > **Disciplina de decisión:** el pase a real se evalúa contra los criterios
 > pre-fijados de VALIDACION_LS.md tras 4-6 semanas de paper — NO contra cuál
@@ -10,10 +10,11 @@ _Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-07-25 (tick automático vía GitHu
 
 - **Equity:** $99.48 (-0.52% desde los $100 iniciales)
 - **Posiciones:** cash
-- **Días corriendo:** 9 (desde 2026-07-17)
+- **Días corriendo:** 10 (desde 2026-07-17)
 
 | Fecha | Equity | Posiciones |
 |-------|--------|------------|
+| 2026-07-26 | $99.48 | cash |
 | 2026-07-25 | $99.48 | cash |
 | 2026-07-24 | $99.48 | cash |
 | 2026-07-23 | $99.48 | cash |
@@ -26,12 +27,13 @@ _Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-07-25 (tick automático vía GitHu
 
 ## V4 + ensemble (experimento secundario — falló criterio (c))
 
-- **Equity:** $99.35 (-0.65% desde los $100 iniciales)
+- **Equity:** $97.90 (-2.10% desde los $100 iniciales)
 - **Posiciones:** BTC -0.25, ETH -0.25
-- **Días corriendo:** 9 (desde 2026-07-17)
+- **Días corriendo:** 10 (desde 2026-07-17)
 
 | Fecha | Equity | Posiciones |
 |-------|--------|------------|
+| 2026-07-26 | $97.90 | BTC -0.25, ETH -0.25 |
 | 2026-07-25 | $99.35 | BTC -0.25, ETH -0.25 |
 | 2026-07-24 | $99.61 | BTC -0.25, ETH -0.25 |
 | 2026-07-23 | $99.03 | BTC -0.25, ETH -0.25 |
