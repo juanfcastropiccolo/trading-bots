@@ -1,20 +1,21 @@
 # Momentum Paper Trader — Reporte
 
-_Actualizado: 2026-08-06 (tick automático vía GitHub Actions)_
+_Actualizado: 2026-08-07 (tick automático vía GitHub Actions)_
 
 ## Estado actual
 
-- **Equity:** $94.57 (-5.43% desde los $100 iniciales)
-- **Cash:** $94.57
-- **Posiciones abiertas:** cash
-- **Target del día:** cash
-- **Días corriendo:** 26 (desde 2026-07-12)
+- **Equity:** $94.43 (-5.57% desde los $100 iniciales)
+- **Cash:** $0.00
+- **Posiciones abiertas:** ADA/USDT
+- **Target del día:** ADA/USDT
+- **Días corriendo:** 27 (desde 2026-07-12)
 - **Pegadas / pérdidas:** 0 / 1
 
 ## Historial de equity
 
 | Fecha | Equity | Posiciones | Target |
 |-------|--------|------------|--------|
+| 2026-08-07 | $94.43 | ADA/USDT | ADA/USDT |
 | 2026-08-06 | $94.57 | cash | cash |
 | 2026-08-05 | $94.57 | cash | cash |
 | 2026-08-04 | $94.57 | cash | cash |
@@ -41,6 +42,7 @@ _Actualizado: 2026-08-06 (tick automático vía GitHub Actions)_
 
 - **2026-07-27** — BUY LINK/USDT (equity $99.85)
 - **2026-07-28** — SELL LINK/USDT (pérdida: equity $99.85 → $94.57)
+- **2026-08-07** — BUY ADA/USDT (equity $94.43)
 
 ## Regla vigente
 
