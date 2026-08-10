@@ -1,20 +1,21 @@
 # Momentum Paper Trader — Reporte
 
-_Actualizado: 2026-08-09 (tick automático vía GitHub Actions)_
+_Actualizado: 2026-08-10 (tick automático vía GitHub Actions)_
 
 ## Estado actual
 
-- **Equity:** $92.84 (-7.16% desde los $100 iniciales)
+- **Equity:** $91.71 (-8.29% desde los $100 iniciales)
 - **Cash:** $0.00
 - **Posiciones abiertas:** ADA/USDT, ETH/USDT
 - **Target del día:** ADA/USDT, ETH/USDT
-- **Días corriendo:** 29 (desde 2026-07-12)
+- **Días corriendo:** 30 (desde 2026-07-12)
 - **Pegadas / pérdidas:** 0 / 1
 
 ## Historial de equity
 
 | Fecha | Equity | Posiciones | Target |
 |-------|--------|------------|--------|
+| 2026-08-10 | $91.71 | ADA/USDT, ETH/USDT | ADA/USDT, ETH/USDT |
 | 2026-08-09 | $92.84 | ADA/USDT, ETH/USDT | ADA/USDT, ETH/USDT |
 | 2026-08-08 | $93.64 | ADA/USDT, ETH/USDT | ADA/USDT, ETH/USDT |
 | 2026-08-07 | $94.43 | ADA/USDT | ADA/USDT |
