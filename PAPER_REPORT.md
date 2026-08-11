@@ -1,20 +1,21 @@
 # Momentum Paper Trader — Reporte
 
-_Actualizado: 2026-08-10 (tick automático vía GitHub Actions)_
+_Actualizado: 2026-08-11 (tick automático vía GitHub Actions)_
 
 ## Estado actual
 
-- **Equity:** $91.71 (-8.29% desde los $100 iniciales)
-- **Cash:** $0.00
-- **Posiciones abiertas:** ADA/USDT, ETH/USDT
-- **Target del día:** ADA/USDT, ETH/USDT
-- **Días corriendo:** 30 (desde 2026-07-12)
-- **Pegadas / pérdidas:** 0 / 1
+- **Equity:** $88.83 (-11.17% desde los $100 iniciales)
+- **Cash:** $88.83
+- **Posiciones abiertas:** cash
+- **Target del día:** cash
+- **Días corriendo:** 31 (desde 2026-07-12)
+- **Pegadas / pérdidas:** 0 / 3
 
 ## Historial de equity
 
 | Fecha | Equity | Posiciones | Target |
 |-------|--------|------------|--------|
+| 2026-08-11 | $88.83 | cash | cash |
 | 2026-08-10 | $91.71 | ADA/USDT, ETH/USDT | ADA/USDT, ETH/USDT |
 | 2026-08-09 | $92.84 | ADA/USDT, ETH/USDT | ADA/USDT, ETH/USDT |
 | 2026-08-08 | $93.64 | ADA/USDT, ETH/USDT | ADA/USDT, ETH/USDT |
@@ -47,6 +48,8 @@ _Actualizado: 2026-08-10 (tick automático vía GitHub Actions)_
 - **2026-07-28** — SELL LINK/USDT (pérdida: equity $99.85 → $94.57)
 - **2026-08-07** — BUY ADA/USDT (equity $94.43)
 - **2026-08-08** — BUY ETH/USDT (equity $93.64)
+- **2026-08-11** — SELL ADA/USDT (pérdida: equity $94.43 → $88.83)
+- **2026-08-11** — SELL ETH/USDT (pérdida: equity $93.64 → $88.83)
 
 ## Regla vigente
 
