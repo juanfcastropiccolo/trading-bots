@@ -1,6 +1,6 @@
 # Momentum Long/Short (perpetuos) — Paper Trading
 
-_Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-08-16 (tick automático vía GitHub Actions). Pesos con signo (− = short), funding real, costos 0.05% por lado, palanca 1x._
+_Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-08-17 (tick automático vía GitHub Actions). Pesos con signo (− = short), funding real, costos 0.05% por lado, palanca 1x._
 
 > **Disciplina de decisión:** el pase a real se evalúa contra los criterios
 > pre-fijados de VALIDACION_LS.md tras 4-6 semanas de paper — NO contra cuál
@@ -8,12 +8,13 @@ _Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-08-16 (tick automático vía GitHu
 
 ## V4 + voltarget (candidata principal — pasó los criterios ex-ante)
 
-- **Equity:** $99.48 (-0.52% desde los $100 iniciales)
-- **Posiciones:** cash
-- **Días corriendo:** 31 (desde 2026-07-17)
+- **Equity:** $99.47 (-0.53% desde los $100 iniciales)
+- **Posiciones:** BTC -0.25
+- **Días corriendo:** 32 (desde 2026-07-17)
 
 | Fecha | Equity | Posiciones |
 |-------|--------|------------|
+| 2026-08-17 | $99.47 | BTC -0.25 |
 | 2026-08-16 | $99.48 | cash |
 | 2026-08-15 | $99.48 | cash |
 | 2026-08-14 | $99.48 | cash |
@@ -43,16 +44,16 @@ _Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-08-16 (tick automático vía GitHu
 | 2026-07-21 | $99.48 | cash |
 | 2026-07-20 | $99.48 | cash |
 | 2026-07-19 | $99.70 | BTC -0.25 |
-| 2026-07-18 | $99.65 | BTC -0.25 |
 
 ## V4 + ensemble (experimento secundario — falló criterio (c))
 
-- **Equity:** $99.48 (-0.52% desde los $100 iniciales)
-- **Posiciones:** BTC -0.25, ETH -0.25
-- **Días corriendo:** 31 (desde 2026-07-17)
+- **Equity:** $98.34 (-1.66% desde los $100 iniciales)
+- **Posiciones:** BTC -0.25
+- **Días corriendo:** 32 (desde 2026-07-17)
 
 | Fecha | Equity | Posiciones |
 |-------|--------|------------|
+| 2026-08-17 | $98.34 | BTC -0.25 |
 | 2026-08-16 | $99.48 | BTC -0.25, ETH -0.25 |
 | 2026-08-15 | $99.31 | BTC -0.25, ETH -0.25 |
 | 2026-08-14 | $99.33 | BTC -0.25, ETH -0.25 |
@@ -82,7 +83,6 @@ _Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-08-16 (tick automático vía GitHu
 | 2026-07-21 | $97.84 | BTC -0.25, ETH -0.25 |
 | 2026-07-20 | $98.66 | BTC -0.25, ETH -0.25 |
 | 2026-07-19 | $99.29 | BTC -0.25, ETH -0.25 |
-| 2026-07-18 | $99.37 | BTC -0.25, ETH -0.25 |
 
 ## Regla vigente
 

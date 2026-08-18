@@ -314,7 +314,21 @@
         "BNB/USDT"
       ],
       "ts": "2026-08-17T00:23:26"
+    },
+    {
+      "date": "2026-08-18",
+      "equity": 91.4,
+      "cash": 0.0,
+      "holdings": {
+        "LINK/USDT": 9.58395816,
+        "BNB/USDT": 0.0
+      },
+      "target": [
+        "LINK/USDT",
+        "BNB/USDT"
+      ],
+      "ts": "2026-08-18T00:22:25"
     }
   ],
-  "last_run": "2026-08-17"
+  "last_run": "2026-08-18"
 }
