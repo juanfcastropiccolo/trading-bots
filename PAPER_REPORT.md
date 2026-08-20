@@ -1,20 +1,21 @@
 # Momentum Paper Trader — Reporte
 
-_Actualizado: 2026-08-19 (tick automático vía GitHub Actions)_
+_Actualizado: 2026-08-20 (tick automático vía GitHub Actions)_
 
 ## Estado actual
 
-- **Equity:** $91.08 (-8.92% desde los $100 iniciales)
+- **Equity:** $101.24 (+1.24% desde los $100 iniciales)
 - **Cash:** $0.00
-- **Posiciones abiertas:** BNB/USDT, LINK/USDT
-- **Target del día:** LINK/USDT, BNB/USDT
-- **Días corriendo:** 39 (desde 2026-07-12)
-- **Pegadas / pérdidas:** 0 / 5
+- **Posiciones abiertas:** ETH/USDT, LINK/USDT
+- **Target del día:** LINK/USDT, ETH/USDT
+- **Días corriendo:** 40 (desde 2026-07-12)
+- **Pegadas / pérdidas:** 1 / 5
 
 ## Historial de equity
 
 | Fecha | Equity | Posiciones | Target |
 |-------|--------|------------|--------|
+| 2026-08-20 | $101.24 | ETH/USDT, LINK/USDT | LINK/USDT, ETH/USDT |
 | 2026-08-19 | $91.08 | BNB/USDT, LINK/USDT | LINK/USDT, BNB/USDT |
 | 2026-08-18 | $91.40 | BNB/USDT, LINK/USDT | LINK/USDT, BNB/USDT |
 | 2026-08-17 | $90.08 | BNB/USDT, LINK/USDT | LINK/USDT, BNB/USDT |
@@ -64,6 +65,8 @@ _Actualizado: 2026-08-19 (tick automático vía GitHub Actions)_
 - **2026-08-15** — SELL BNB/USDT (pérdida: equity $87.62 → $86.55)
 - **2026-08-15** — BUY LINK/USDT (equity $86.55)
 - **2026-08-16** — BUY BNB/USDT (equity $90.43)
+- **2026-08-20** — SELL BNB/USDT (pegada: equity $90.43 → $101.24)
+- **2026-08-20** — BUY ETH/USDT (equity $101.24)
 
 ## Regla vigente
 

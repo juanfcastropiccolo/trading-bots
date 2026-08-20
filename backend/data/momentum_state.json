@@ -2,7 +2,7 @@
   "cash": 0.0,
   "holdings": {
     "LINK/USDT": 9.583958155152718,
-    "BNB/USDT": 0.0
+    "ETH/USDT": 0.0
   },
   "history": [
     {
@@ -342,7 +342,21 @@
         "BNB/USDT"
       ],
       "ts": "2026-08-19T00:22:25"
+    },
+    {
+      "date": "2026-08-20",
+      "equity": 101.24,
+      "cash": 0.0,
+      "holdings": {
+        "LINK/USDT": 9.58395816,
+        "ETH/USDT": 0.0
+      },
+      "target": [
+        "LINK/USDT",
+        "ETH/USDT"
+      ],
+      "ts": "2026-08-20T00:23:09"
     }
   ],
-  "last_run": "2026-08-19"
+  "last_run": "2026-08-20"
 }
