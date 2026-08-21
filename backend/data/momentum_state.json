@@ -356,7 +356,21 @@
         "ETH/USDT"
       ],
       "ts": "2026-08-20T00:23:09"
+    },
+    {
+      "date": "2026-08-21",
+      "equity": 103.12,
+      "cash": 0.0,
+      "holdings": {
+        "LINK/USDT": 9.58395816,
+        "ETH/USDT": 0.0
+      },
+      "target": [
+        "LINK/USDT",
+        "ETH/USDT"
+      ],
+      "ts": "2026-08-21T00:24:19"
     }
   ],
-  "last_run": "2026-08-20"
+  "last_run": "2026-08-21"
 }

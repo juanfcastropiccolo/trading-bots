@@ -1,20 +1,21 @@
 # Momentum Paper Trader — Reporte
 
-_Actualizado: 2026-08-20 (tick automático vía GitHub Actions)_
+_Actualizado: 2026-08-21 (tick automático vía GitHub Actions)_
 
 ## Estado actual
 
-- **Equity:** $101.24 (+1.24% desde los $100 iniciales)
+- **Equity:** $103.12 (+3.12% desde los $100 iniciales)
 - **Cash:** $0.00
 - **Posiciones abiertas:** ETH/USDT, LINK/USDT
 - **Target del día:** LINK/USDT, ETH/USDT
-- **Días corriendo:** 40 (desde 2026-07-12)
+- **Días corriendo:** 41 (desde 2026-07-12)
 - **Pegadas / pérdidas:** 1 / 5
 
 ## Historial de equity
 
 | Fecha | Equity | Posiciones | Target |
 |-------|--------|------------|--------|
+| 2026-08-21 | $103.12 | ETH/USDT, LINK/USDT | LINK/USDT, ETH/USDT |
 | 2026-08-20 | $101.24 | ETH/USDT, LINK/USDT | LINK/USDT, ETH/USDT |
 | 2026-08-19 | $91.08 | BNB/USDT, LINK/USDT | LINK/USDT, BNB/USDT |
 | 2026-08-18 | $91.40 | BNB/USDT, LINK/USDT | LINK/USDT, BNB/USDT |
