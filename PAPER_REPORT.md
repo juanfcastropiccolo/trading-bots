@@ -1,20 +1,21 @@
 # Momentum Paper Trader — Reporte
 
-_Actualizado: 2026-08-21 (tick automático vía GitHub Actions)_
+_Actualizado: 2026-08-22 (tick automático vía GitHub Actions)_
 
 ## Estado actual
 
-- **Equity:** $103.12 (+3.12% desde los $100 iniciales)
+- **Equity:** $114.84 (+14.84% desde los $100 iniciales)
 - **Cash:** $0.00
-- **Posiciones abiertas:** ETH/USDT, LINK/USDT
-- **Target del día:** LINK/USDT, ETH/USDT
-- **Días corriendo:** 41 (desde 2026-07-12)
-- **Pegadas / pérdidas:** 1 / 5
+- **Posiciones abiertas:** ADA/USDT, LINK/USDT
+- **Target del día:** LINK/USDT, ADA/USDT
+- **Días corriendo:** 42 (desde 2026-07-12)
+- **Pegadas / pérdidas:** 2 / 5
 
 ## Historial de equity
 
 | Fecha | Equity | Posiciones | Target |
 |-------|--------|------------|--------|
+| 2026-08-22 | $114.84 | ADA/USDT, LINK/USDT | LINK/USDT, ADA/USDT |
 | 2026-08-21 | $103.12 | ETH/USDT, LINK/USDT | LINK/USDT, ETH/USDT |
 | 2026-08-20 | $101.24 | ETH/USDT, LINK/USDT | LINK/USDT, ETH/USDT |
 | 2026-08-19 | $91.08 | BNB/USDT, LINK/USDT | LINK/USDT, BNB/USDT |
@@ -68,6 +69,8 @@ _Actualizado: 2026-08-21 (tick automático vía GitHub Actions)_
 - **2026-08-16** — BUY BNB/USDT (equity $90.43)
 - **2026-08-20** — SELL BNB/USDT (pegada: equity $90.43 → $101.24)
 - **2026-08-20** — BUY ETH/USDT (equity $101.24)
+- **2026-08-22** — SELL ETH/USDT (pegada: equity $101.24 → $114.84)
+- **2026-08-22** — BUY ADA/USDT (equity $114.84)
 
 ## Regla vigente
 
