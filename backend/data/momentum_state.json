@@ -2,7 +2,7 @@
   "cash": 0.0,
   "holdings": {
     "LINK/USDT": 9.583958155152718,
-    "ADA/USDT": 0.0
+    "XRP/USDT": 0.0
   },
   "history": [
     {
@@ -398,7 +398,21 @@
         "ADA/USDT"
       ],
       "ts": "2026-08-23T00:24:53"
+    },
+    {
+      "date": "2026-08-24",
+      "equity": 109.74,
+      "cash": 0.0,
+      "holdings": {
+        "LINK/USDT": 9.58395816,
+        "XRP/USDT": 0.0
+      },
+      "target": [
+        "XRP/USDT",
+        "LINK/USDT"
+      ],
+      "ts": "2026-08-24T00:24:05"
     }
   ],
-  "last_run": "2026-08-23"
+  "last_run": "2026-08-24"
 }
