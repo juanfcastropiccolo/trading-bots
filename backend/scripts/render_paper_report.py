@@ -16,7 +16,13 @@ STATE_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "momentum_sta
 REPORT_PATH = os.path.join(os.path.dirname(__file__), "..", "..", "PAPER_REPORT.md")
 
 
+def real(holdings: dict) -> dict:
+    """Ignora claves con qty 0 (posiciones fantasma del bug de ago 2026)."""
+    return {s: q for s, q in holdings.items() if q > 0}
+
+
 def fmt_holdings(holdings: dict) -> str:
+    holdings = real(holdings)
     return ", ".join(sorted(holdings)) if holdings else "cash"
 
 
@@ -28,7 +34,7 @@ def build_trades(history: list) -> tuple[list, int, int]:
     trades, entry_equity, wins, losses = [], {}, 0, 0
     prev = {}
     for row in history:
-        cur = row["holdings"]
+        cur = real(row["holdings"])
         bought = [s for s in cur if s not in prev]
         sold = [s for s in prev if s not in cur]
         for s in sold:

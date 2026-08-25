@@ -52,6 +52,67 @@ def fetch_closes() -> tuple[dict, dict, str]:
     raise SystemExit(f"Ningún exchange disponible de {EXCHANGE_IDS}: {last_err}")
 
 
+MIN_TRADE = 0.5  # USD; evita operaciones de centavos al ajustar pesos
+
+
+def held(state: dict) -> dict:
+    """Posiciones con cantidad positiva (una clave con qty 0 no es posición)."""
+    return {s: q for s, q in state["holdings"].items() if q > 0}
+
+
+def rebalance(state: dict, target: list, prices: dict) -> list[str]:
+    """Lleva el portafolio a pesos iguales 1/TOP_K por pick, como el backtest
+    (validate_momentum.py): si solo pasa un pick, la otra mitad queda en cash.
+
+    Solo opera si el conjunto de posiciones difiere del target. Vende primero
+    (salidas completas y recortes de las que quedan), después compra. Muta
+    `state` y devuelve las líneas de log de las operaciones.
+    """
+    state["holdings"] = held(state)
+    current = set(state["holdings"])
+    if set(target) == current:
+        return []
+
+    log = []
+    equity = state["cash"] + sum(q * prices[s] for s, q in state["holdings"].items())
+    slot = equity / TOP_K
+
+    # 1) ventas: lo que sale del target, y exceso de lo que queda
+    for s in sorted(current):
+        qty = state["holdings"][s]
+        if s not in target:
+            sell_qty = qty
+        else:
+            excess = qty * prices[s] - slot
+            sell_qty = excess / prices[s] if excess > MIN_TRADE else 0.0
+        if sell_qty <= 0:
+            continue
+        proceeds = sell_qty * prices[s] * (1 - COST)
+        state["cash"] += proceeds
+        if sell_qty >= qty:
+            state["holdings"].pop(s)
+            log.append(f"SELL {s}: {qty:.6f} @ {prices[s]:.4f} → +${proceeds:.2f}")
+        else:
+            state["holdings"][s] = qty - sell_qty
+            log.append(f"TRIM {s}: -{sell_qty:.6f} @ {prices[s]:.4f} → +${proceeds:.2f}")
+
+    # 2) compras: entrantes y faltantes de lo que queda, hasta 1 slot cada una
+    for s in target:
+        have = state["holdings"].get(s, 0.0) * prices[s]
+        spend = min(slot - have, state["cash"])
+        if spend <= MIN_TRADE:
+            continue
+        qty = spend * (1 - COST) / prices[s]
+        state["holdings"][s] = state["holdings"].get(s, 0.0) + qty
+        state["cash"] -= spend
+        verb = "BUY " if have == 0 else "ADD "
+        log.append(f"{verb} {s}: {qty:.6f} @ {prices[s]:.4f} (${spend:.2f})")
+
+    if not log:
+        log.append(f"Sin cambios: mantengo {sorted(current) or ['cash']}")
+    return log
+
+
 def load_state() -> dict:
     if os.path.exists(STATE_PATH):
         with open(STATE_PATH) as f:
@@ -98,7 +159,7 @@ def main():
         print(f"{s:10s} {sc['momentum']*100:+7.2f}%  {str(sc['above_trend']):5s}{mark}")
 
     if args.check:
-        current = set(state["holdings"].keys())
+        current = set(held(state))
         if set(target) != current:
             print(f"\n⚠️  SEÑAL: target cambiaría de {sorted(current) or ['cash']} "
                   f"a {sorted(target) or ['cash']} (se aplica en el tick diario)")
@@ -106,27 +167,8 @@ def main():
             print(f"\nSin señales nuevas: target sigue {sorted(current) or ['cash']}")
         return
 
-    current = set(state["holdings"].keys())
-    if set(target) == current:
-        print(f"\nSin cambios: mantengo {sorted(current) or ['cash']}")
-    else:
-        # vender lo que sale
-        for s in list(current - set(target)):
-            qty = state["holdings"].pop(s)
-            proceeds = qty * prices[s] * (1 - COST)
-            state["cash"] += proceeds
-            print(f"\nSELL {s}: {qty:.6f} @ {prices[s]:.4f} → +${proceeds:.2f}")
-        # comprar lo que entra, repartiendo el cash disponible
-        entrants = [s for s in target if s not in state["holdings"]]
-        if entrants:
-            per_slot = state["cash"] / len(entrants) if len(target) <= len(entrants) else \
-                state["cash"] * (len(entrants) / TOP_K) / len(entrants)
-            for s in entrants:
-                spend = min(per_slot, state["cash"])
-                qty = spend * (1 - COST) / prices[s]
-                state["holdings"][s] = qty
-                state["cash"] -= spend
-                print(f"BUY  {s}: {qty:.6f} @ {prices[s]:.4f} (${spend:.2f})")
+    for line in rebalance(state, target, prices):
+        print(line)
 
     equity = state["cash"] + sum(q * prices[s] for s, q in state["holdings"].items())
     state["history"].append({
