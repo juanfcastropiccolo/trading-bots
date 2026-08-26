@@ -1,20 +1,21 @@
 # Momentum Paper Trader — Reporte
 
-_Actualizado: 2026-08-25 (tick automático vía GitHub Actions)_
+_Actualizado: 2026-08-26 (tick automático vía GitHub Actions)_
 
 ## Estado actual
 
-- **Equity:** $111.12 (+11.12% desde los $100 iniciales)
-- **Cash:** $55.60
-- **Posiciones abiertas:** ADA/USDT
-- **Target del día:** ADA/USDT, XRP/USDT
-- **Días corriendo:** 45 (desde 2026-07-12)
+- **Equity:** $107.87 (+7.87% desde los $100 iniciales)
+- **Cash:** $0.00
+- **Posiciones abiertas:** ADA/USDT, LINK/USDT
+- **Target del día:** LINK/USDT, ADA/USDT
+- **Días corriendo:** 46 (desde 2026-07-12)
 - **Pegadas / pérdidas:** 1 / 4
 
 ## Historial de equity
 
 | Fecha | Equity | Posiciones | Target |
 |-------|--------|------------|--------|
+| 2026-08-26 | $107.87 | ADA/USDT, LINK/USDT | LINK/USDT, ADA/USDT |
 | 2026-08-25 | $111.12 | ADA/USDT | ADA/USDT, XRP/USDT |
 | 2026-08-24 | $109.74 | LINK/USDT | XRP/USDT, LINK/USDT |
 | 2026-08-23 | $111.83 | LINK/USDT | LINK/USDT, ADA/USDT |
@@ -69,6 +70,7 @@ _Actualizado: 2026-08-25 (tick automático vía GitHub Actions)_
 - **2026-08-15** — BUY LINK/USDT (equity $86.55)
 - **2026-08-25** — SELL LINK/USDT (pegada: equity $86.55 → $111.12)
 - **2026-08-25** — BUY ADA/USDT (equity $111.12)
+- **2026-08-26** — BUY LINK/USDT (equity $107.87)
 
 ## Regla vigente
 
