@@ -1,8 +1,8 @@
 {
-  "last_run": "2026-08-28",
+  "last_run": "2026-08-29",
   "strategies": {
     "v4_voltarget": {
-      "equity": 91.9257,
+      "equity": 92.239,
       "weights": {
         "XRP/USDT": 0.29218,
         "LINK/USDT": 0.348725
@@ -300,11 +300,20 @@
             "LINK/USDT": 0.348725
           },
           "ts": "2026-08-29T00:48:16+00:00"
+        },
+        {
+          "date": "2026-08-29",
+          "equity": 92.239,
+          "weights": {
+            "XRP/USDT": 0.29218,
+            "LINK/USDT": 0.348725
+          },
+          "ts": "2026-08-30T00:58:51+00:00"
         }
       ]
     },
     "v4_ensemble": {
-      "equity": 91.6531,
+      "equity": 92.0159,
       "weights": {
         "ETH/USDT": 0.5,
         "LINK/USDT": 0.5
@@ -682,6 +691,15 @@
             "LINK/USDT": 0.5
           },
           "ts": "2026-08-29T00:48:16+00:00"
+        },
+        {
+          "date": "2026-08-29",
+          "equity": 92.0159,
+          "weights": {
+            "ETH/USDT": 0.5,
+            "LINK/USDT": 0.5
+          },
+          "ts": "2026-08-30T00:58:51+00:00"
         }
       ]
     }
