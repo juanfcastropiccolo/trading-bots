@@ -1,20 +1,21 @@
 # Momentum Paper Trader — Reporte
 
-_Actualizado: 2026-09-05 (tick automático vía GitHub Actions)_
+_Actualizado: 2026-09-06 (tick automático vía GitHub Actions)_
 
 ## Estado actual
 
-- **Equity:** $110.33 (+10.33% desde los $100 iniciales)
+- **Equity:** $113.66 (+13.66% desde los $100 iniciales)
 - **Cash:** $0.00
 - **Posiciones abiertas:** LINK/USDT, SOL/USDT
 - **Target del día:** LINK/USDT, SOL/USDT
-- **Días corriendo:** 56 (desde 2026-07-12)
+- **Días corriendo:** 57 (desde 2026-07-12)
 - **Pegadas / pérdidas:** 1 / 5
 
 ## Historial de equity
 
 | Fecha | Equity | Posiciones | Target |
 |-------|--------|------------|--------|
+| 2026-09-06 | $113.66 | LINK/USDT, SOL/USDT | LINK/USDT, SOL/USDT |
 | 2026-09-05 | $110.33 | LINK/USDT, SOL/USDT | LINK/USDT, SOL/USDT |
 | 2026-09-04 | $112.29 | LINK/USDT, SOL/USDT | LINK/USDT, SOL/USDT |
 | 2026-09-03 | $106.41 | LINK/USDT, SOL/USDT | SOL/USDT, LINK/USDT |
