@@ -1,20 +1,21 @@
 # Momentum Paper Trader — Reporte
 
-_Actualizado: 2026-09-11 (tick automático vía GitHub Actions)_
+_Actualizado: 2026-09-12 (tick automático vía GitHub Actions)_
 
 ## Estado actual
 
-- **Equity:** $107.49 (+7.49% desde los $100 iniciales)
+- **Equity:** $108.14 (+8.14% desde los $100 iniciales)
 - **Cash:** $0.00
-- **Posiciones abiertas:** LINK/USDT, XRP/USDT
-- **Target del día:** XRP/USDT, LINK/USDT
-- **Días corriendo:** 62 (desde 2026-07-12)
-- **Pegadas / pérdidas:** 2 / 5
+- **Posiciones abiertas:** SOL/USDT, XRP/USDT
+- **Target del día:** XRP/USDT, SOL/USDT
+- **Días corriendo:** 63 (desde 2026-07-12)
+- **Pegadas / pérdidas:** 3 / 5
 
 ## Historial de equity
 
 | Fecha | Equity | Posiciones | Target |
 |-------|--------|------------|--------|
+| 2026-09-12 | $108.14 | SOL/USDT, XRP/USDT | XRP/USDT, SOL/USDT |
 | 2026-09-11 | $107.49 | LINK/USDT, XRP/USDT | XRP/USDT, LINK/USDT |
 | 2026-09-10 | $110.79 | LINK/USDT, XRP/USDT | XRP/USDT, LINK/USDT |
 | 2026-09-09 | $115.22 | LINK/USDT, XRP/USDT | LINK/USDT, XRP/USDT |
@@ -91,6 +92,8 @@ _Actualizado: 2026-09-11 (tick automático vía GitHub Actions)_
 - **2026-08-27** — BUY SOL/USDT (equity $110.01)
 - **2026-09-09** — SELL SOL/USDT (pegada: equity $110.01 → $115.22)
 - **2026-09-09** — BUY XRP/USDT (equity $115.22)
+- **2026-09-12** — SELL LINK/USDT (pegada: equity $107.87 → $108.14)
+- **2026-09-12** — BUY SOL/USDT (equity $108.14)
 
 ## Regla vigente
 

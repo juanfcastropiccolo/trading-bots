@@ -1,6 +1,6 @@
 # Momentum Long/Short (perpetuos) — Paper Trading
 
-_Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-09-10 (tick automático vía GitHub Actions). Pesos con signo (− = short), funding real, costos 0.05% por lado, palanca 1x._
+_Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-09-11 (tick automático vía GitHub Actions). Pesos con signo (− = short), funding real, costos 0.05% por lado, palanca 1x._
 
 > **Disciplina de decisión:** el pase a real se evalúa contra los criterios
 > pre-fijados de VALIDACION_LS.md tras 4-6 semanas de paper — NO contra cuál
@@ -8,12 +8,13 @@ _Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-09-10 (tick automático vía GitHu
 
 ## V4 + voltarget (candidata principal — pasó los criterios ex-ante)
 
-- **Equity:** $90.91 (-9.09% desde los $100 iniciales)
+- **Equity:** $92.50 (-7.50% desde los $100 iniciales)
 - **Posiciones:** LINK +0.31, SOL +0.39
-- **Días corriendo:** 56 (desde 2026-07-17)
+- **Días corriendo:** 57 (desde 2026-07-17)
 
 | Fecha | Equity | Posiciones |
 |-------|--------|------------|
+| 2026-09-11 | $92.50 | LINK +0.31, SOL +0.39 |
 | 2026-09-10 | $90.91 | LINK +0.31, SOL +0.39 |
 | 2026-09-09 | $92.79 | LINK +0.31, SOL +0.39 |
 | 2026-09-08 | $95.14 | LINK +0.31, SOL +0.39 |
@@ -43,16 +44,16 @@ _Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-09-10 (tick automático vía GitHu
 | 2026-08-15 | $99.48 | cash |
 | 2026-08-14 | $99.48 | cash |
 | 2026-08-13 | $99.48 | cash |
-| 2026-08-12 | $99.48 | cash |
 
 ## V4 + ensemble (experimento secundario — falló criterio (c))
 
-- **Equity:** $85.29 (-14.71% desde los $100 iniciales)
+- **Equity:** $87.28 (-12.72% desde los $100 iniciales)
 - **Posiciones:** LINK +0.50, SOL +0.50
-- **Días corriendo:** 56 (desde 2026-07-17)
+- **Días corriendo:** 57 (desde 2026-07-17)
 
 | Fecha | Equity | Posiciones |
 |-------|--------|------------|
+| 2026-09-11 | $87.28 | LINK +0.50, SOL +0.50 |
 | 2026-09-10 | $85.29 | LINK +0.50, SOL +0.50 |
 | 2026-09-09 | $87.83 | LINK +0.50, SOL +0.50 |
 | 2026-09-08 | $91.24 | LINK +0.50, SOL +0.50 |
@@ -82,7 +83,6 @@ _Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-09-10 (tick automático vía GitHu
 | 2026-08-15 | $99.31 | BTC -0.25, ETH -0.25 |
 | 2026-08-14 | $99.33 | BTC -0.25, ETH -0.25 |
 | 2026-08-13 | $99.09 | BTC -0.25, ETH -0.25 |
-| 2026-08-12 | $99.16 | BTC -0.25, ETH -0.25 |
 
 ## Regla vigente
 
