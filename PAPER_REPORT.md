@@ -1,20 +1,21 @@
 # Momentum Paper Trader — Reporte
 
-_Actualizado: 2026-09-18 (tick automático vía GitHub Actions)_
+_Actualizado: 2026-09-19 (tick automático vía GitHub Actions)_
 
 ## Estado actual
 
-- **Equity:** $107.76 (+7.76% desde los $100 iniciales)
+- **Equity:** $112.94 (+12.94% desde los $100 iniciales)
 - **Cash:** $0.00
-- **Posiciones abiertas:** BNB/USDT, SOL/USDT
-- **Target del día:** SOL/USDT, BNB/USDT
-- **Días corriendo:** 69 (desde 2026-07-12)
-- **Pegadas / pérdidas:** 3 / 6
+- **Posiciones abiertas:** LTC/USDT, SOL/USDT
+- **Target del día:** SOL/USDT, LTC/USDT
+- **Días corriendo:** 70 (desde 2026-07-12)
+- **Pegadas / pérdidas:** 4 / 6
 
 ## Historial de equity
 
 | Fecha | Equity | Posiciones | Target |
 |-------|--------|------------|--------|
+| 2026-09-19 | $112.94 | LTC/USDT, SOL/USDT | SOL/USDT, LTC/USDT |
 | 2026-09-18 | $107.76 | BNB/USDT, SOL/USDT | SOL/USDT, BNB/USDT |
 | 2026-09-17 | $104.02 | SOL/USDT, XRP/USDT | XRP/USDT, SOL/USDT |
 | 2026-09-16 | $103.84 | SOL/USDT, XRP/USDT | XRP/USDT, SOL/USDT |
@@ -102,6 +103,8 @@ _Actualizado: 2026-09-18 (tick automático vía GitHub Actions)_
 - **2026-09-12** — BUY SOL/USDT (equity $108.14)
 - **2026-09-18** — SELL XRP/USDT (pérdida: equity $115.22 → $107.76)
 - **2026-09-18** — BUY BNB/USDT (equity $107.76)
+- **2026-09-19** — SELL BNB/USDT (pegada: equity $107.76 → $112.94)
+- **2026-09-19** — BUY LTC/USDT (equity $112.94)
 
 ## Regla vigente
 
