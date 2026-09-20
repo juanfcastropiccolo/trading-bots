@@ -24,6 +24,11 @@ dev = [
     "pytest-asyncio>=0.23.0",
     "httpx>=0.27.0",
 ]
+# POC de market making con Jev (backend/jev): el SDK solo hace falta para
+# llamar al modelo real; el mercado sintético, las reglas y los tests no lo usan.
+jev = [
+    "typesafe-sdk>=0.7.0",
+]
 
 [build-system]
 requires = ["hatchling"]
