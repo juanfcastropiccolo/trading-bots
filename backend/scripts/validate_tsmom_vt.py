@@ -75,12 +75,15 @@ from backtest_common import (
     metrics,
     random_baseline,
 )
-from synthetic_market import generate_market
+from market_data import describe, load_market, parse_cli
 
 N_DAYS = 2190          # ~6 años
 N_FOLDS = 6
 SEEDS = [42, 7, 123]
 PRIMARY_SEED = 42
+
+SOURCE = "synthetic"     # market_data: 'synthetic' | 'real' (se fija desde la CLI en main)
+CACHE_DIR = None         # cache de futures_data para --source real
 
 L_BASE = 90
 ENSEMBLE_LBS = [20, 60, 90, 120]
@@ -181,12 +184,12 @@ def fold_metrics_rows(returns: pd.Series, slices: list[tuple[int, int]]) -> list
 # ---------------------------------------------------------------- una corrida completa (una semilla)
 
 def run_seed(seed: int) -> dict:
-    mk = generate_market(n_days=N_DAYS, seed=seed)
+    mk = load_market(SOURCE, seed=seed, n_days=N_DAYS, cache_dir=CACHE_DIR)
     close = mk.close
     daily_ret = close.pct_change()
     slices = fold_slices(len(close), N_FOLDS, warmup=WARMUP)
 
-    out = {"n_days": len(close), "fold_slices": slices}
+    out = {"n_days": len(close), "source": SOURCE, "period": describe(mk), "fold_slices": slices}
 
     variants = {"l90": [L_BASE], "ensemble": ENSEMBLE_LBS}
     bh = buy_and_hold(close, rebalance=True)
@@ -239,7 +242,7 @@ def print_report(results: dict) -> None:
     print(f"=== TSMOM absoluto diversificado + vol targeting (2 capas) ===")
     print(f"vol_objetivo_activo={VOL_TARGET_ASSET:.0%}  cap_activo={ASSET_LEVERAGE_CAP}  "
           f"vol_objetivo_portafolio={VOL_TARGET_PORTFOLIO:.0%}  cap_bruto={GROSS_CAP}")
-    print(f"días={primary['n_days']}  folds={N_FOLDS}  warmup={WARMUP}  semillas={SEEDS}\n")
+    print(f"datos: {primary['period']}  folds={N_FOLDS}  warmup={WARMUP}  semillas={SEEDS}\n")
 
     print(f"--- buy&hold equiponderado (semilla {PRIMARY_SEED}) ---")
     print(fold_table(primary["buy_and_hold"]["folds"]))
@@ -271,7 +274,7 @@ def print_report(results: dict) -> None:
 def slim_seed_result(seed_result: dict, full: bool) -> dict:
     """Recorta el resultado de una semilla para el JSON: detalle completo por
     fold solo cuando `full` (semilla primaria); si no, solo agregados."""
-    out = {"n_days": seed_result["n_days"]}
+    out = {"n_days": seed_result["n_days"], "period": seed_result["period"], "source": seed_result["source"]}
     out["buy_and_hold"] = seed_result["buy_and_hold"] if full else {"aggregate": seed_result["buy_and_hold"]["aggregate"]}
     for vname in ("l90", "ensemble"):
         v = seed_result[vname]
@@ -291,7 +294,7 @@ def slim_seed_result(seed_result: dict, full: bool) -> dict:
 def build_payload(results: dict) -> dict:
     return {
         "config": {
-            "n_days": N_DAYS, "n_folds": N_FOLDS, "warmup": WARMUP, "seeds": SEEDS,
+            "source": SOURCE, "n_days": N_DAYS, "n_folds": N_FOLDS, "warmup": WARMUP, "seeds": SEEDS,
             "L_base": L_BASE, "ensemble_lookbacks": ENSEMBLE_LBS,
             "vol_lookback": VOL_LOOKBACK, "vol_target_asset": VOL_TARGET_ASSET,
             "asset_leverage_cap": ASSET_LEVERAGE_CAP, "vol_target_portfolio": VOL_TARGET_PORTFOLIO,
@@ -304,13 +307,18 @@ def build_payload(results: dict) -> dict:
 
 
 def main() -> None:
+    global SOURCE, CACHE_DIR, SEEDS, PRIMARY_SEED
+    cfg = parse_cli("Prueba D: TSMOM absoluto diversificado + vol targeting")
+    SOURCE, CACHE_DIR, SEEDS = cfg.source, cfg.cache_dir, list(cfg.seeds)
+    PRIMARY_SEED = SEEDS[0]
+    print(f"Fuente de datos: {cfg.label}")
     results = {seed: run_seed(seed) for seed in SEEDS}
     print_report(results)
 
     payload = build_payload(results)
 
     out_path = os.path.join(os.path.dirname(__file__), "..", "data", "tsmom_vt_results.json")
-    out_path = os.path.normpath(out_path)
+    out_path = os.path.normpath(cfg.results_path(out_path))
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
     with open(out_path, "w") as f:
         json.dump(payload, f, indent=2, default=str)

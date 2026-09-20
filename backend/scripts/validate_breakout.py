@@ -80,7 +80,8 @@ import pandas as pd
 from backtest_common import (COST_CONSERVATIVE, COST_REALISTIC, PERIODS_PER_YEAR,
                               apply_costs, buy_and_hold, fold_slices, fold_table,
                               metrics, random_baseline)
-from synthetic_market import SYMBOLS, generate_market
+from synthetic_market import SYMBOLS
+from market_data import describe, load_market, parse_cli
 
 N_FAST = 20
 N_SLOW = 55
@@ -94,6 +95,9 @@ WARMUP = N_SLOW + 5     # margen sobre el canal más lento (55)
 N_DAYS = 2190
 SEEDS = (42, 7, 123)
 RESULTS_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "breakout_results.json")
+
+SOURCE = "synthetic"     # market_data: 'synthetic' | 'real' (se fija desde la CLI en main)
+CACHE_DIR = None         # cache de futures_data para --source real
 
 
 # ---------------------------------------------------------------- señales
@@ -203,7 +207,7 @@ def run_seed(seed: int, risk_target: float = RISK_TARGET, n_days: int = N_DAYS) 
     """Corre la construcción completa (estrategia + benchmarks) para una
     semilla del mercado sintético y devuelve métricas por fold + agregadas,
     en ambos regímenes de costo, junto con buy&hold y el baseline aleatorio."""
-    mk = generate_market(n_days=n_days, seed=seed)
+    mk = load_market(SOURCE, seed=seed, n_days=n_days, cache_dir=CACHE_DIR)
     close = mk.close
     asset_returns = close.pct_change().fillna(0)
 
@@ -217,8 +221,8 @@ def run_seed(seed: int, risk_target: float = RISK_TARGET, n_days: int = N_DAYS) 
     n = len(close)
     folds = fold_slices(n, N_FOLDS, warmup=WARMUP)
 
-    out = {"seed": seed, "risk_target": risk_target, "avg_gross": round(avg_gross, 4),
-           "n_days": n, "warmup": WARMUP, "folds": [], "costs": {}}
+    out = {"seed": seed, "source": SOURCE, "period": describe(mk), "risk_target": risk_target,
+           "avg_gross": round(avg_gross, 4), "n_days": n, "warmup": WARMUP, "folds": [], "costs": {}}
 
     for cost_label, cost in (("conservador_0.15%", COST_CONSERVATIVE), ("realista_0.05%", COST_REALISTIC)):
         strat_ret = apply_costs(weights, asset_returns, cost)
@@ -251,7 +255,7 @@ def _elegir_riesgo_objetivo(seed: int = 42) -> None:
     par de valores de `riesgo_objetivo` sobre la semilla de referencia y
     muestra la exposición bruta resultante, para documentar la elección a
     priori hecha en el docstring del módulo."""
-    mk = generate_market(n_days=N_DAYS, seed=seed)
+    mk = load_market(SOURCE, seed=seed, n_days=N_DAYS, cache_dir=CACHE_DIR)
     for rt in (0.005, 0.01, 0.02):
         w = simulate_breakout_weights(mk.close, mk.high, mk.low, risk_target=rt)
         gross = w.abs().sum(axis=1)
@@ -262,15 +266,22 @@ def _elegir_riesgo_objetivo(seed: int = 42) -> None:
 # ---------------------------------------------------------------- main
 
 def main():
+    global SOURCE, CACHE_DIR, SEEDS
+    cfg = parse_cli("Prueba A: ruptura de canal Donchian + ATR")
+    SOURCE, CACHE_DIR, SEEDS = cfg.source, cfg.cache_dir, tuple(cfg.seeds)
+    results_path = cfg.results_path(RESULTS_PATH)
+    print(f"Fuente de datos: {cfg.label}")
     results = {"params": {"n_fast": N_FAST, "n_slow": N_SLOW, "atr_n": ATR_N, "k_trail": K_TRAIL,
                            "risk_target": RISK_TARGET, "cap_asset": CAP_ASSET, "cap_gross": CAP_GROSS,
-                           "n_folds": N_FOLDS, "warmup": WARMUP, "n_days": N_DAYS, "seeds": list(SEEDS)},
+                           "n_folds": N_FOLDS, "warmup": WARMUP, "n_days": N_DAYS, "seeds": list(SEEDS),
+                           "source": SOURCE},
                "by_seed": {}}
 
     for seed in SEEDS:
         print(f"\n{'=' * 70}\nSEMILLA {seed}\n{'=' * 70}")
         res = run_seed(seed)
         results["by_seed"][str(seed)] = res
+        print(f"datos: {res['period']}")
         print(f"exposición bruta media: {res['avg_gross']:.2f}x")
         for cost_label, block in res["costs"].items():
             print(f"\n--- costos {cost_label} ---")
@@ -278,10 +289,10 @@ def main():
             print(f"  b&h agregado:      {block['buy_and_hold']['agregado']}")
             print(f"  random agregado:   {block['random_baseline']['agregado']}")
 
-    os.makedirs(os.path.dirname(RESULTS_PATH), exist_ok=True)
-    with open(RESULTS_PATH, "w") as fh:
+    os.makedirs(os.path.dirname(results_path), exist_ok=True)
+    with open(results_path, "w") as fh:
         json.dump(results, fh, indent=2, default=str)
-    print(f"\nResultados guardados en {RESULTS_PATH}")
+    print(f"\nResultados guardados en {results_path}")
 
 
 if __name__ == "__main__":

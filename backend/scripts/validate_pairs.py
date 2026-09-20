@@ -54,7 +54,8 @@ import os
 import numpy as np
 import pandas as pd
 
-from synthetic_market import COINTEGRATED_PAIRS, SYMBOLS, generate_market
+from synthetic_market import COINTEGRATED_PAIRS, SYMBOLS
+from market_data import describe, load_market, parse_cli
 from backtest_common import (COST_CONSERVATIVE, COST_REALISTIC, apply_costs,
                               buy_and_hold, fold_slices, fold_table, metrics,
                               random_baseline)
@@ -74,6 +75,9 @@ COSTS = {"conservador_0.15%": COST_CONSERVATIVE, "realista_0.05%": COST_REALISTI
 
 TRUE_PAIRS = {frozenset(p) for p in COINTEGRATED_PAIRS}
 DATA_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "pairs_results.json")
+
+SOURCE = "synthetic"     # market_data: 'synthetic' | 'real' (se fija desde la CLI en main)
+CACHE_DIR = None         # cache de futures_data para --source real
 
 
 # ---------------------------------------------------------------- screening
@@ -256,7 +260,7 @@ def _tuple_lists(d):
 
 
 def run_seed(seed: int) -> dict:
-    mk = generate_market(n_days=N_DAYS, seed=seed)
+    mk = load_market(SOURCE, seed=seed, n_days=N_DAYS, cache_dir=CACHE_DIR)
     close = mk.close
     log_close = np.log(close)
     ret = close.pct_change()
@@ -264,10 +268,15 @@ def run_seed(seed: int) -> dict:
     combined_start, combined_end = folds[0][0], folds[-1][1]
 
     w_screen, diag_screen = run_variant(log_close, ret, folds, use_screening=True)
-    w_oracle, diag_oracle = run_variant(log_close, ret, folds, use_screening=False)
-
     ev_screen = evaluate(w_screen, ret, folds)
-    ev_oracle = evaluate(w_oracle, ret, folds)
+    # el oráculo (operar los 3 pares cointegrados por construcción) solo existe
+    # en el mercado sintético: con datos reales nadie sabe cuáles son los pares
+    oracle = None
+    if SOURCE == "synthetic":
+        w_oracle, diag_oracle = run_variant(log_close, ret, folds, use_screening=False)
+        ev_oracle = evaluate(w_oracle, ret, folds)
+        oracle = {"pairs_by_fold": diag_oracle, "metrics": ev_oracle,
+                  "avg_gross": float(w_oracle.iloc[combined_start:combined_end].abs().sum(axis=1).mean())}
 
     bh_metrics = metrics(buy_and_hold(close, rebalance=True).iloc[combined_start:combined_end])
 
@@ -281,21 +290,26 @@ def run_seed(seed: int) -> dict:
 
     return {
         "seed": seed,
-        "n_days": N_DAYS,
+        "source": SOURCE,
+        "period": describe(mk),
+        "n_days": len(close),
         "folds": [{"start": s, "end": e} for s, e in folds],
-        "screening": {"pairs_by_fold": diag_screen, "match_stats": match_stats(diag_screen),
+        "screening": {"pairs_by_fold": diag_screen,
+                      "match_stats": match_stats(diag_screen) if SOURCE == "synthetic" else None,
                       "metrics": ev_screen, "avg_gross": avg_gross_screen},
-        "oracle": {"pairs_by_fold": diag_oracle,
-                   "metrics": ev_oracle,
-                   "avg_gross": float(w_oracle.iloc[combined_start:combined_end].abs().sum(axis=1).mean())},
+        "oracle": oracle,
         "buy_and_hold": bh_metrics,
         "random_baseline": rb_metrics,
     }
 
 
 def main():
+    global SOURCE, CACHE_DIR, SEEDS
+    cfg = parse_cli("Prueba B: relative value / pairs trading")
+    SOURCE, CACHE_DIR, SEEDS = cfg.source, cfg.cache_dir, list(cfg.seeds)
+    data_path = cfg.results_path(DATA_PATH)
     print("=== Prueba B: relative value / pairs trading (spread mean-reversion) ===")
-    print(f"Mercado sintético: {N_DAYS} días, {len(SYMBOLS)} activos, semillas {SEEDS}")
+    print(f"Fuente: {cfg.label}; {len(SYMBOLS)} activos, semillas {SEEDS}")
     print(f"Screening: ventana corr/hedge/AR1={CORR_WINDOW}d, top-{TOP_M} por correlación, "
           f"banda half-life=[{HL_MIN:.0f},{HL_MAX:.0f}]d")
     print(f"Trading: z-window={Z_WINDOW}d, entrada |z|>{Z_ENTRY}, salida |z|<{Z_EXIT} o {MAX_HOLD}d en posición")
@@ -306,39 +320,43 @@ def main():
         res = run_seed(seed)
         all_results[str(seed)] = res
 
-        print(f"--- semilla {seed} ---")
-        for d, ms in zip(res["screening"]["pairs_by_fold"], res["screening"]["match_stats"]):
+        print(f"--- semilla {seed} --- datos: {res['period']}")
+        ms_list = res["screening"]["match_stats"] or [None] * len(res["screening"]["pairs_by_fold"])
+        for d, ms in zip(res["screening"]["pairs_by_fold"], ms_list):
             elegidos = [(p["a"], p["b"], p.get("half_life")) for p in d["pairs"]]
             print(f"  tramo {d['fold'] + 1} [{d['start']}:{d['end']}] elegidos={elegidos}")
-            print(f"    verdaderos encontrados: {ms['true_positives']} | no encontrados: {ms['false_negatives']} | "
-                  f"otros elegidos (no verdaderos): {ms['false_positives']}")
+            if ms is not None:
+                print(f"    verdaderos encontrados: {ms['true_positives']} | no encontrados: {ms['false_negatives']} | "
+                      f"otros elegidos (no verdaderos): {ms['false_positives']}")
 
-        if seed == 42:
+        if seed == SEEDS[0]:
             for cost_name in COSTS:
                 rows = [(f"tramo{k + 1}", res["screening"]["metrics"][cost_name]["per_fold"][k])
                         for k in range(N_FOLDS)] + [("AGREGADO", res["screening"]["metrics"][cost_name]["agg"])]
                 print(f"\n  [SCREENING] costo {cost_name}\n" + fold_table(rows))
-                rows_o = [(f"tramo{k + 1}", res["oracle"]["metrics"][cost_name]["per_fold"][k])
-                          for k in range(N_FOLDS)] + [("AGREGADO", res["oracle"]["metrics"][cost_name]["agg"])]
-                print(f"\n  [ORÁCULO] costo {cost_name}\n" + fold_table(rows_o))
+                if res["oracle"] is not None:
+                    rows_o = [(f"tramo{k + 1}", res["oracle"]["metrics"][cost_name]["per_fold"][k])
+                              for k in range(N_FOLDS)] + [("AGREGADO", res["oracle"]["metrics"][cost_name]["agg"])]
+                    print(f"\n  [ORÁCULO] costo {cost_name}\n" + fold_table(rows_o))
             print(f"\n  buy&hold equiponderado (mismo span OOS): {res['buy_and_hold']}")
             print(f"  random baseline (avg_gross={res['screening']['avg_gross']:.3f}): {res['random_baseline']}\n")
         else:
             print(f"  [screening agregado realista] {res['screening']['metrics']['realista_0.05%']['agg']}")
-            print(f"  [oráculo agregado realista]   {res['oracle']['metrics']['realista_0.05%']['agg']}\n")
+            if res["oracle"] is not None:
+                print(f"  [oráculo agregado realista]   {res['oracle']['metrics']['realista_0.05%']['agg']}\n")
 
-    os.makedirs(os.path.dirname(DATA_PATH), exist_ok=True)
+    os.makedirs(os.path.dirname(data_path), exist_ok=True)
     payload = {
-        "config": {"n_days": N_DAYS, "n_folds": N_FOLDS, "warmup": WARMUP, "corr_window": CORR_WINDOW,
+        "config": {"source": SOURCE, "n_days": N_DAYS, "n_folds": N_FOLDS, "warmup": WARMUP, "corr_window": CORR_WINDOW,
                    "top_m": TOP_M, "hl_min": HL_MIN, "hl_max": HL_MAX, "z_window": Z_WINDOW,
                    "z_entry": Z_ENTRY, "z_exit": Z_EXIT, "max_hold": MAX_HOLD, "seeds": SEEDS,
                    "costs": COSTS},
         "true_pairs": [list(p) for p in COINTEGRATED_PAIRS],
         "seeds": all_results,
     }
-    with open(DATA_PATH, "w") as f:
+    with open(data_path, "w") as f:
         json.dump(_tuple_lists(payload), f, indent=2, default=float)
-    print(f"Resultados guardados en {DATA_PATH}")
+    print(f"Resultados guardados en {data_path}")
 
 
 if __name__ == "__main__":

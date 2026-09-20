@@ -62,7 +62,8 @@ from sklearn.metrics import accuracy_score, roc_auc_score
 from sklearn.preprocessing import StandardScaler
 
 sys.path.insert(0, os.path.dirname(__file__))
-from synthetic_market import SYMBOLS, generate_market  # noqa: E402
+from synthetic_market import SYMBOLS  # noqa: E402
+from market_data import describe, load_market, parse_cli  # noqa: E402
 from backtest_common import (  # noqa: E402
     COST_CONSERVATIVE, COST_REALISTIC,
     apply_costs, buy_and_hold, fold_slices, metrics, random_baseline,
@@ -87,6 +88,9 @@ SIGNAL_K = 1.0          # exposición bruta tope de la señal ML/naive (gross m�
 N_ASSETS = len(SYMBOLS)
 
 RESULTS_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "ml_walkforward_results.json")
+
+SOURCE = "synthetic"     # market_data: 'synthetic' | 'real' (se fija desde la CLI en main)
+CACHE_DIR = None         # cache de futures_data para --source real
 
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
 
@@ -222,7 +226,7 @@ def backtest_weights(weights: pd.DataFrame, fwd_ret: pd.DataFrame) -> dict[str, 
 
 def run_walkforward(seed: int, n_days: int = N_DAYS, n_folds: int = N_FOLDS,
                     warmup: int = WARMUP) -> dict:
-    mk = generate_market(n_days=n_days, seed=seed)
+    mk = load_market(SOURCE, seed=seed, n_days=n_days, cache_dir=CACHE_DIR)
     close, funding = mk.close, mk.funding
     panel, dates = build_panel(close, funding)
     n = len(dates)
@@ -234,7 +238,8 @@ def run_walkforward(seed: int, n_days: int = N_DAYS, n_folds: int = N_FOLDS,
 
     bh = buy_and_hold(close, rebalance=True)
 
-    result: dict = {"seed": seed, "folds": [], "last_fold_diagnostics": {}}
+    result: dict = {"seed": seed, "source": SOURCE, "period": describe(mk), "folds": [],
+                    "last_fold_diagnostics": {}}
     model_pnl = {"logistic": {"conservador": pd.Series(0.0, index=dates), "realista": pd.Series(0.0, index=dates)},
                 "gboost": {"conservador": pd.Series(0.0, index=dates), "realista": pd.Series(0.0, index=dates)}}
     model_rnd_pnl = {"logistic": {"conservador": pd.Series(0.0, index=dates), "realista": pd.Series(0.0, index=dates)},
@@ -345,7 +350,7 @@ def _fmt_m(m: dict) -> str:
 
 def print_report(res: dict) -> None:
     seed = res["seed"]
-    print(f"\n{'=' * 70}\nSEMILLA {seed}\n{'=' * 70}")
+    print(f"\n{'=' * 70}\nSEMILLA {seed} — datos: {res['period']}\n{'=' * 70}")
     print(f"{'fold':>4} | {'log_acc':>7} {'log_auc':>7} | {'gb_acc':>7} {'gb_auc':>7} | rango de test")
     for f in res["folds"]:
         print(f"{f['fold']:>4} | {f['logistic']['accuracy']:>7.4f} {f['logistic']['auc']:>7.4f} | "
@@ -373,6 +378,11 @@ def print_report(res: dict) -> None:
 
 
 def main() -> None:
+    global SOURCE, CACHE_DIR, SEEDS
+    cfg = parse_cli("Prueba E: clasificador ML con walk-forward expandiente")
+    SOURCE, CACHE_DIR, SEEDS = cfg.source, cfg.cache_dir, list(cfg.seeds)
+    results_path = cfg.results_path(RESULTS_PATH)
+    print(f"Fuente de datos: {cfg.label}")
     all_results = {}
     for seed in SEEDS:
         res = run_walkforward(seed)
@@ -380,14 +390,14 @@ def main() -> None:
         print_report(res)
 
     meta = {
-        "n_days": N_DAYS, "n_folds": N_FOLDS, "warmup": WARMUP, "seeds": SEEDS,
+        "source": SOURCE, "n_days": N_DAYS, "n_folds": N_FOLDS, "warmup": WARMUP, "seeds": SEEDS,
         "feature_names": FEATURE_NAMES, "signal_k": SIGNAL_K, "n_assets": N_ASSETS,
         "cost_conservative": COST_CONSERVATIVE, "cost_realistic": COST_REALISTIC,
     }
-    os.makedirs(os.path.dirname(RESULTS_PATH), exist_ok=True)
-    with open(RESULTS_PATH, "w") as fh:
+    os.makedirs(os.path.dirname(results_path), exist_ok=True)
+    with open(results_path, "w") as fh:
         json.dump({"meta": meta, "seeds": all_results}, fh, indent=2, default=str)
-    print(f"\nResultados guardados en {RESULTS_PATH}")
+    print(f"\nResultados guardados en {results_path}")
 
 
 if __name__ == "__main__":

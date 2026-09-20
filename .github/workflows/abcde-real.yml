@@ -1,0 +1,44 @@
+name: abcde-real
+
+# Corre las cinco construcciones de estrategia (A-E) sobre datos REALES de
+# perpetuos de Binance (bulk mensual de data.binance.vision: sin API key y
+# sin geo-block en los runners de GitHub) y commitea el cache de datos, los
+# JSON de resultados y el reporte ESTRATEGIAS_ABCDE_REAL.md a la rama desde
+# la que se disparó. Se lanza a mano: Actions → abcde-real → Run workflow.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: abcde-real-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install pandas numpy scikit-learn
+
+      - name: Datos reales + cinco pruebas + reporte
+        run: bash backend/scripts/run_abcde_real.sh
+
+      - name: Commit y push (cache de datos, resultados, reporte)
+        run: |
+          git config user.name "juanfcastropiccolo"
+          git config user.email "juanfcastropiccolo@gmail.com"
+          git add -f backend/data/cache/*.csv backend/data/*_results_real.json ESTRATEGIAS_ABCDE_REAL.md
+          if git diff --cached --quiet; then
+            echo "Sin cambios que commitear."
+          else
+            git commit -m "chore: pruebas A-E sobre datos reales $(date -u +%F)"
+            git push origin HEAD:${{ github.ref_name }}
+          fi

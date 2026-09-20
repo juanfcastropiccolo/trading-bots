@@ -50,7 +50,7 @@ import pandas as pd
 from backtest_common import (COST_CONSERVATIVE, COST_REALISTIC, apply_costs,
                              buy_and_hold, fold_slices, fold_table, metrics,
                              random_baseline)
-from synthetic_market import generate_market
+from market_data import describe, load_market, parse_cli
 
 N_DAYS = 2190          # ~6 años
 N_FOLDS = 6
@@ -62,6 +62,9 @@ K = 3                  # activos por pata
 SEEDS = [42, 7, 123]
 COSTS = {"conservador_0.15%": COST_CONSERVATIVE, "realista_0.05%": COST_REALISTIC}
 OUT_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "carry_results.json")
+
+SOURCE = "synthetic"     # market_data: 'synthetic' | 'real' (se fija desde la CLI en main)
+CACHE_DIR = None         # cache de futures_data para --source real
 
 
 # --------------------------------------------------------------- señal / pesos
@@ -138,7 +141,7 @@ def _decomp_row(price: pd.Series, funding: pd.Series) -> dict:
 
 
 def run_seed(seed: int) -> dict:
-    mk = generate_market(n_days=N_DAYS, seed=seed)
+    mk = load_market(SOURCE, seed=seed, n_days=N_DAYS, cache_dir=CACHE_DIR)
     price_ret = mk.close.pct_change().fillna(0.0)
     trend = funding_trend(mk.funding)
     idx = mk.close.index
@@ -147,7 +150,8 @@ def run_seed(seed: int) -> dict:
     w_neutral = build_weights(trend, neutral=True)
     w_directional = build_weights(trend, neutral=False)
 
-    out = {"seed": seed, "warmup": WARMUP, "folds": [(int(a), int(b)) for a, b in folds],
+    out = {"seed": seed, "source": SOURCE, "period": describe(mk), "warmup": WARMUP,
+           "folds": [(int(a), int(b)) for a, b in folds],
           "dollar_neutral": {}, "sin_neutralizar": {}, "benchmarks": {}}
 
     for cost_label, cost in COSTS.items():
@@ -209,7 +213,12 @@ def run_seed(seed: int) -> dict:
 
 
 def main():
-    results = {"params": {"n_days": N_DAYS, "n_folds": N_FOLDS, "warmup": WARMUP,
+    global SOURCE, CACHE_DIR, SEEDS
+    cfg = parse_cli("Prueba C: carry cross-sectional de funding")
+    SOURCE, CACHE_DIR, SEEDS = cfg.source, cfg.cache_dir, list(cfg.seeds)
+    out_path = cfg.results_path(OUT_PATH)
+    print(f"Fuente de datos: {cfg.label}")
+    results = {"params": {"source": SOURCE, "n_days": N_DAYS, "n_folds": N_FOLDS, "warmup": WARMUP,
                           "funding_window": FUNDING_WINDOW, "rebal_days": REBAL_DAYS,
                           "k": K, "seeds": SEEDS, "costs": COSTS},
               "seeds": {}}
@@ -217,6 +226,7 @@ def main():
         print(f"\n{'=' * 70}\nSEED {seed}\n{'=' * 70}")
         r = run_seed(seed)
         results["seeds"][str(seed)] = r
+        print(f"datos: {r['period']}")
 
         for cost_label in COSTS:
             dn = r["dollar_neutral"][cost_label]
@@ -231,10 +241,10 @@ def main():
         print(f"-- corr con buy&hold: neutral={r['correlacion_con_buy_and_hold']['dollar_neutral']} "
               f"sin_neutralizar={r['correlacion_con_buy_and_hold']['sin_neutralizar']} --")
 
-    os.makedirs(os.path.dirname(OUT_PATH), exist_ok=True)
-    with open(OUT_PATH, "w") as f:
+    os.makedirs(os.path.dirname(out_path), exist_ok=True)
+    with open(out_path, "w") as f:
         json.dump(results, f, indent=2, default=str)
-    print(f"\nResultados guardados en {os.path.abspath(OUT_PATH)}")
+    print(f"\nResultados guardados en {os.path.abspath(out_path)}")
 
 
 if __name__ == "__main__":

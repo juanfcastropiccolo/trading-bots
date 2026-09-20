@@ -54,6 +54,18 @@ Logística y gradient boosting sobre un panel pooled de los 10 activos, reentren
 
 Las dos construcciones que "ganan" (A, D) explotan directamente la tendencia persistente que el generador sintético mete a propósito. Las dos que "pierden" (B, C) fallan por el mismo motivo en las dos: un filtro/señal calculado sobre un mercado con fuerte factor común y drift persistente termina confundiendo esa estructura de fondo con la señal específica que busca (cointegración genuina en B, carry genuino en C). E es el caso más sutil: gana, pero el propio agente identifica que gana por la razón "equivocada" para trasladar la conclusión a datos reales (estacionariedad que no existe en cripto real). Ninguna de las cinco pruebas debería leerse como "constrúyase esto para operar": la conclusión útil es que las cinco están bien construidas (sin lookahead, con costos, con walk-forward honesto, verificado por 52 tests) y que el proceso de descubrimiento importa tanto o más que la construcción misma — B lo demuestra en carne propia con su comparación oráculo vs. screening real.
 
+## Cómo correr las cinco pruebas con datos reales (ya está armado)
+
+Las cinco pruebas aceptan `--source real`: cargan klines diarios y funding de perpetuos USDT-M de Binance (bulk mensual de data.binance.vision, desde sep-2020, sin API key y sin geo-block en los runners de GitHub) a través de `backend/scripts/market_data.py` y `futures_data.py`, con los mismos folds, costos y benchmarks. Con datos reales hay una sola historia, así que la única "semilla" es la 42 (solo alimenta al baseline aleatorio y al random_state de los modelos) y los resultados se guardan con sufijo `_real`. La prueba B no tiene versión oráculo con datos reales (nadie sabe cuáles son los pares cointegrados).
+
+Tres formas de ejecutarlo, de la más simple a la más manual:
+
+1. **GitHub Actions (recomendado, no necesita nada local):** pestaña *Actions* → workflow `abcde-real` → *Run workflow* sobre esta rama. Descarga los datos, corre las cinco pruebas, genera `ESTRATEGIAS_ABCDE_REAL.md` y commitea a la rama el reporte, los JSON y el cache de datos (`backend/data/cache/*.csv`). Con el cache commiteado, cualquier sesión posterior, aun sin red, puede re-correr las pruebas.
+2. **Local o en una sesión de Claude con salida de red:** `pip install pandas numpy scikit-learn && bash backend/scripts/run_abcde_real.sh` desde la raíz del repo.
+3. **A mano:** `python backend/scripts/futures_data.py`, después `python backend/scripts/validate_<prueba>.py --source real` para cada una, y `python backend/scripts/render_abcde_report.py --source real`.
+
+El camino real está probado de punta a punta en este entorno sin red usando `backend/scripts/real_cache_fixture.py`, que escribe un cache con el formato exacto de `futures_data.py` (tests en `backend/tests/test_market_data.py`). Lo único que no se pudo ejecutar acá es la descarga en sí.
+
 ## Qué haría falta para que esto responda algo sobre cripto real
 
 Los cinco scripts ya están escritos contra el mismo framework (`backtest_common.py`) que usan `validate_momentum.py` y `validate_ls_momentum.py`. En cuanto el entorno tenga salida de red, correr `research.fetch_history` / `futures_data.build_matrices` en lugar de `synthetic_market.generate_market` y repetir exactamente los mismos folds y comparaciones es directo — ningún script necesita reescribirse, solo la fuente de datos. Ahí, y solo ahí, los números dejarían de ser sobre "qué encuentra la construcción en un mercado con tendencia persistente" para ser sobre "qué encuentra en cripto real".
