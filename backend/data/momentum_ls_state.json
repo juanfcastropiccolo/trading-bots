@@ -1,8 +1,8 @@
 {
-  "last_run": "2026-09-26",
+  "last_run": "2026-09-27",
   "strategies": {
     "v4_voltarget": {
-      "equity": 99.6389,
+      "equity": 99.936,
       "weights": {
         "SOL/USDT": 0.343902,
         "AVAX/USDT": 0.243813
@@ -561,11 +561,20 @@
             "AVAX/USDT": 0.243813
           },
           "ts": "2026-09-27T04:53:32+00:00"
+        },
+        {
+          "date": "2026-09-27",
+          "equity": 99.936,
+          "weights": {
+            "SOL/USDT": 0.343902,
+            "AVAX/USDT": 0.243813
+          },
+          "ts": "2026-09-28T04:55:35+00:00"
         }
       ]
     },
     "v4_ensemble": {
-      "equity": 97.7393,
+      "equity": 98.2414,
       "weights": {
         "SOL/USDT": 0.5,
         "AVAX/USDT": 0.5
@@ -1204,6 +1213,15 @@
             "AVAX/USDT": 0.5
           },
           "ts": "2026-09-27T04:53:32+00:00"
+        },
+        {
+          "date": "2026-09-27",
+          "equity": 98.2414,
+          "weights": {
+            "SOL/USDT": 0.5,
+            "AVAX/USDT": 0.5
+          },
+          "ts": "2026-09-28T04:55:35+00:00"
         }
       ]
     }
