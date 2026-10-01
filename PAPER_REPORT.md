@@ -1,20 +1,21 @@
 # Momentum Paper Trader — Reporte
 
-_Actualizado: 2026-09-30 (tick automático vía GitHub Actions)_
+_Actualizado: 2026-10-01 (tick automático vía GitHub Actions)_
 
 ## Estado actual
 
-- **Equity:** $127.10 (+27.10% desde los $100 iniciales)
+- **Equity:** $126.31 (+26.31% desde los $100 iniciales)
 - **Cash:** $0.00
 - **Posiciones abiertas:** AVAX/USDT, LTC/USDT
 - **Target del día:** AVAX/USDT, LTC/USDT
-- **Días corriendo:** 81 (desde 2026-07-12)
+- **Días corriendo:** 82 (desde 2026-07-12)
 - **Pegadas / pérdidas:** 5 / 7
 
 ## Historial de equity
 
 | Fecha | Equity | Posiciones | Target |
 |-------|--------|------------|--------|
+| 2026-10-01 | $126.31 | AVAX/USDT, LTC/USDT | AVAX/USDT, LTC/USDT |
 | 2026-09-30 | $127.10 | AVAX/USDT, LTC/USDT | AVAX/USDT, LTC/USDT |
 | 2026-09-29 | $123.81 | AVAX/USDT, LTC/USDT | AVAX/USDT, LTC/USDT |
 | 2026-09-28 | $127.38 | AVAX/USDT, LTC/USDT | AVAX/USDT, LTC/USDT |
