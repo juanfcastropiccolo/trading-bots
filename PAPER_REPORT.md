@@ -1,20 +1,21 @@
 # Momentum Paper Trader — Reporte
 
-_Actualizado: 2026-10-09 (tick automático vía GitHub Actions)_
+_Actualizado: 2026-10-10 (tick automático vía GitHub Actions)_
 
 ## Estado actual
 
-- **Equity:** $118.81 (+18.81% desde los $100 iniciales)
+- **Equity:** $119.73 (+19.73% desde los $100 iniciales)
 - **Cash:** $0.00
-- **Posiciones abiertas:** AVAX/USDT, LTC/USDT
-- **Target del día:** AVAX/USDT, LTC/USDT
-- **Días corriendo:** 90 (desde 2026-07-12)
-- **Pegadas / pérdidas:** 5 / 7
+- **Posiciones abiertas:** ADA/USDT, AVAX/USDT
+- **Target del día:** AVAX/USDT, ADA/USDT
+- **Días corriendo:** 91 (desde 2026-07-12)
+- **Pegadas / pérdidas:** 5 / 8
 
 ## Historial de equity
 
 | Fecha | Equity | Posiciones | Target |
 |-------|--------|------------|--------|
+| 2026-10-10 | $119.73 | ADA/USDT, AVAX/USDT | AVAX/USDT, ADA/USDT |
 | 2026-10-09 | $118.81 | AVAX/USDT, LTC/USDT | AVAX/USDT, LTC/USDT |
 | 2026-10-08 | $122.70 | AVAX/USDT, LTC/USDT | AVAX/USDT, LTC/USDT |
 | 2026-10-07 | $126.56 | AVAX/USDT, LTC/USDT | AVAX/USDT, LTC/USDT |
@@ -129,6 +130,8 @@ _Actualizado: 2026-10-09 (tick automático vía GitHub Actions)_
 - **2026-09-20** — BUY AVAX/USDT (equity $108.87)
 - **2026-09-23** — SELL SOL/USDT (pegada: equity $108.14 → $123.10)
 - **2026-09-23** — BUY LTC/USDT (equity $123.10)
+- **2026-10-10** — SELL LTC/USDT (pérdida: equity $123.10 → $119.73)
+- **2026-10-10** — BUY ADA/USDT (equity $119.73)
 
 ## Regla vigente
 
