@@ -1,0 +1,49 @@
+name: momentum-research-1k
+
+# Investigación one-shot: validación de variantes long-only para la cuenta
+# paper de $1000 (VALIDACION_1K.md). Corre en Actions porque los runners
+# tienen acceso a las APIs de exchanges. Se dispara a mano o al pushear
+# cambios de este workflow / del script de validación.
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/momentum-research-1k.yml"
+      - "backend/scripts/validate_momentum_1k.py"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: momentum-research-1k-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install ccxt pandas numpy
+
+      # Binance geo-bloquea los runners de EE.UU.; kucoin/gate/mexc tienen
+      # historia diaria larga de los 10 majors.
+      - name: Validación variantes $1000
+        run: EXCHANGE_ID="kucoin,gate,mexc" python backend/scripts/validate_momentum_1k.py
+
+      - name: Commit y push de resultados
+        run: |
+          git config user.name "juanfcastropiccolo"
+          git config user.email "juanfcastropiccolo@gmail.com"
+          git add VALIDACION_1K.md
+          if git diff --cached --quiet; then
+            echo "Sin cambios en VALIDACION_1K.md."
+          else
+            git commit -m "research: validación variantes long-only \$1000 ($(date -u +%F))"
+            git push origin HEAD:${GITHUB_REF_NAME}
+          fi
