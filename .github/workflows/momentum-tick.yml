@@ -33,20 +33,25 @@ jobs:
       - name: Tick diario long-only (spot)
         run: EXCHANGE_ID="kraken,kucoin,mexc,gate" python backend/scripts/momentum_paper.py
 
+      - name: Tick diario long-only $1000 (spot)
+        run: EXCHANGE_ID="kraken,kucoin,mexc,gate" python backend/scripts/momentum_1k_paper.py
+
       - name: Tick diario long/short (perps)
         run: PERP_EXCHANGE_ID="bybit,okx" python backend/scripts/momentum_ls_paper.py
 
       - name: Regenerar reportes
         run: |
           python backend/scripts/render_paper_report.py
+          python backend/scripts/render_1k_report.py
           python backend/scripts/render_ls_report.py
 
       - name: Commit y push del estado
         run: |
           git config user.name "juanfcastropiccolo"
           git config user.email "juanfcastropiccolo@gmail.com"
-          git add -f backend/data/momentum_state.json backend/data/momentum_ls_state.json \
-                     PAPER_REPORT.md PAPER_LS_REPORT.md
+          git add -f backend/data/momentum_state.json backend/data/momentum_1k_state.json \
+                     backend/data/momentum_ls_state.json \
+                     PAPER_REPORT.md PAPER_1K_REPORT.md PAPER_LS_REPORT.md
           if git diff --cached --quiet; then
             echo "Sin cambios que commitear (tick ya registrado hoy)."
           else
