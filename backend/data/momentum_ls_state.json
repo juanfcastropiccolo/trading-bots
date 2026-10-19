@@ -1,8 +1,8 @@
 {
-  "last_run": "2026-10-17",
+  "last_run": "2026-10-18",
   "strategies": {
     "v4_voltarget": {
-      "equity": 91.7223,
+      "equity": 91.8922,
       "weights": {
         "AVAX/USDT": 0.206206,
         "LTC/USDT": 0.31475
@@ -750,11 +750,20 @@
             "LTC/USDT": 0.31475
           },
           "ts": "2026-10-18T04:04:49+00:00"
+        },
+        {
+          "date": "2026-10-18",
+          "equity": 91.8922,
+          "weights": {
+            "AVAX/USDT": 0.206206,
+            "LTC/USDT": 0.31475
+          },
+          "ts": "2026-10-19T04:14:00+00:00"
         }
       ]
     },
     "v4_ensemble": {
-      "equity": 80.9084,
+      "equity": 81.1319,
       "weights": {
         "LINK/USDT": 0.5,
         "AVAX/USDT": 0.5
@@ -1582,6 +1591,15 @@
             "AVAX/USDT": 0.5
           },
           "ts": "2026-10-18T04:04:49+00:00"
+        },
+        {
+          "date": "2026-10-18",
+          "equity": 81.1319,
+          "weights": {
+            "LINK/USDT": 0.5,
+            "AVAX/USDT": 0.5
+          },
+          "ts": "2026-10-19T04:14:00+00:00"
         }
       ]
     }
