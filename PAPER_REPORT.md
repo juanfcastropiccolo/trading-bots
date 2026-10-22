@@ -1,20 +1,21 @@
 # Momentum Paper Trader — Reporte
 
-_Actualizado: 2026-10-21 (tick automático vía GitHub Actions)_
+_Actualizado: 2026-10-22 (tick automático vía GitHub Actions)_
 
 ## Estado actual
 
-- **Equity:** $108.22 (+8.22% desde los $100 iniciales)
+- **Equity:** $107.58 (+7.58% desde los $100 iniciales)
 - **Cash:** $0.00
 - **Posiciones abiertas:** BTC/USDT, LTC/USDT
 - **Target del día:** LTC/USDT, BTC/USDT
-- **Días corriendo:** 102 (desde 2026-07-12)
+- **Días corriendo:** 103 (desde 2026-07-12)
 - **Pegadas / pérdidas:** 6 / 13
 
 ## Historial de equity
 
 | Fecha | Equity | Posiciones | Target |
 |-------|--------|------------|--------|
+| 2026-10-22 | $107.58 | BTC/USDT, LTC/USDT | LTC/USDT, BTC/USDT |
 | 2026-10-21 | $108.22 | BTC/USDT, LTC/USDT | LTC/USDT, BTC/USDT |
 | 2026-10-20 | $106.41 | BTC/USDT, LTC/USDT | LTC/USDT, BTC/USDT |
 | 2026-10-19 | $106.11 | BTC/USDT, LTC/USDT | BTC/USDT, LTC/USDT |
