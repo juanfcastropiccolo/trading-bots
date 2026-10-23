@@ -1,20 +1,21 @@
 # Momentum Paper Trader — Reporte
 
-_Actualizado: 2026-10-22 (tick automático vía GitHub Actions)_
+_Actualizado: 2026-10-23 (tick automático vía GitHub Actions)_
 
 ## Estado actual
 
-- **Equity:** $107.58 (+7.58% desde los $100 iniciales)
-- **Cash:** $0.00
-- **Posiciones abiertas:** BTC/USDT, LTC/USDT
-- **Target del día:** LTC/USDT, BTC/USDT
-- **Días corriendo:** 103 (desde 2026-07-12)
-- **Pegadas / pérdidas:** 6 / 13
+- **Equity:** $105.60 (+5.60% desde los $100 iniciales)
+- **Cash:** $0.30
+- **Posiciones abiertas:** BTC/USDT, LINK/USDT
+- **Target del día:** LINK/USDT, BTC/USDT
+- **Días corriendo:** 104 (desde 2026-07-12)
+- **Pegadas / pérdidas:** 6 / 14
 
 ## Historial de equity
 
 | Fecha | Equity | Posiciones | Target |
 |-------|--------|------------|--------|
+| 2026-10-23 | $105.60 | BTC/USDT, LINK/USDT | LINK/USDT, BTC/USDT |
 | 2026-10-22 | $107.58 | BTC/USDT, LTC/USDT | LTC/USDT, BTC/USDT |
 | 2026-10-21 | $108.22 | BTC/USDT, LTC/USDT | LTC/USDT, BTC/USDT |
 | 2026-10-20 | $106.41 | BTC/USDT, LTC/USDT | LTC/USDT, BTC/USDT |
@@ -156,6 +157,8 @@ _Actualizado: 2026-10-22 (tick automático vía GitHub Actions)_
 - **2026-10-18** — BUY LTC/USDT (equity $106.94)
 - **2026-10-19** — SELL AVAX/USDT (pérdida: equity $108.87 → $106.11)
 - **2026-10-19** — BUY BTC/USDT (equity $106.11)
+- **2026-10-23** — SELL LTC/USDT (pérdida: equity $106.94 → $105.60)
+- **2026-10-23** — BUY LINK/USDT (equity $105.60)
 
 ## Regla vigente
 
