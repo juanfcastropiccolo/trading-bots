@@ -1,20 +1,21 @@
 # Momentum Paper Trader — Reporte
 
-_Actualizado: 2026-10-23 (tick automático vía GitHub Actions)_
+_Actualizado: 2026-10-24 (tick automático vía GitHub Actions)_
 
 ## Estado actual
 
-- **Equity:** $105.60 (+5.60% desde los $100 iniciales)
-- **Cash:** $0.30
-- **Posiciones abiertas:** BTC/USDT, LINK/USDT
-- **Target del día:** LINK/USDT, BTC/USDT
-- **Días corriendo:** 104 (desde 2026-07-12)
-- **Pegadas / pérdidas:** 6 / 14
+- **Equity:** $103.30 (+3.30% desde los $100 iniciales)
+- **Cash:** $0.00
+- **Posiciones abiertas:** BNB/USDT, BTC/USDT
+- **Target del día:** BTC/USDT, BNB/USDT
+- **Días corriendo:** 105 (desde 2026-07-12)
+- **Pegadas / pérdidas:** 6 / 15
 
 ## Historial de equity
 
 | Fecha | Equity | Posiciones | Target |
 |-------|--------|------------|--------|
+| 2026-10-24 | $103.30 | BNB/USDT, BTC/USDT | BTC/USDT, BNB/USDT |
 | 2026-10-23 | $105.60 | BTC/USDT, LINK/USDT | LINK/USDT, BTC/USDT |
 | 2026-10-22 | $107.58 | BTC/USDT, LTC/USDT | LTC/USDT, BTC/USDT |
 | 2026-10-21 | $108.22 | BTC/USDT, LTC/USDT | LTC/USDT, BTC/USDT |
@@ -159,6 +160,8 @@ _Actualizado: 2026-10-23 (tick automático vía GitHub Actions)_
 - **2026-10-19** — BUY BTC/USDT (equity $106.11)
 - **2026-10-23** — SELL LTC/USDT (pérdida: equity $106.94 → $105.60)
 - **2026-10-23** — BUY LINK/USDT (equity $105.60)
+- **2026-10-24** — SELL LINK/USDT (pérdida: equity $105.60 → $103.30)
+- **2026-10-24** — BUY BNB/USDT (equity $103.30)
 
 ## Regla vigente
 

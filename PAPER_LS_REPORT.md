@@ -1,6 +1,6 @@
 # Momentum Long/Short (perpetuos) — Paper Trading
 
-_Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-10-22 (tick automático vía GitHub Actions). Pesos con signo (− = short), funding real, costos 0.05% por lado, palanca 1x._
+_Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-10-23 (tick automático vía GitHub Actions). Pesos con signo (− = short), funding real, costos 0.05% por lado, palanca 1x._
 
 > **Disciplina de decisión:** el pase a real se evalúa contra los criterios
 > pre-fijados de VALIDACION_LS.md tras 4-6 semanas de paper — NO contra cuál
@@ -8,12 +8,13 @@ _Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-10-22 (tick automático vía GitHu
 
 ## V4 + voltarget (candidata principal — pasó los criterios ex-ante)
 
-- **Equity:** $91.06 (-8.94% desde los $100 iniciales)
+- **Equity:** $90.09 (-9.91% desde los $100 iniciales)
 - **Posiciones:** BTC +0.50, LTC +0.34
-- **Días corriendo:** 98 (desde 2026-07-17)
+- **Días corriendo:** 99 (desde 2026-07-17)
 
 | Fecha | Equity | Posiciones |
 |-------|--------|------------|
+| 2026-10-23 | $90.09 | BTC +0.50, LTC +0.34 |
 | 2026-10-22 | $91.06 | BTC +0.50, LTC +0.34 |
 | 2026-10-21 | $93.95 | BTC +0.50, LTC +0.34 |
 | 2026-10-20 | $93.37 | BTC +0.50, LTC +0.34 |
@@ -43,16 +44,16 @@ _Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-10-22 (tick automático vía GitHu
 | 2026-09-26 | $99.64 | AVAX +0.24, SOL +0.34 |
 | 2026-09-25 | $99.42 | AVAX +0.24, SOL +0.34 |
 | 2026-09-24 | $96.95 | AVAX +0.24, SOL +0.34 |
-| 2026-09-23 | $96.49 | AVAX +0.24, SOL +0.34 |
 
 ## V4 + ensemble (experimento secundario — falló criterio (c))
 
-- **Equity:** $77.83 (-22.17% desde los $100 iniciales)
+- **Equity:** $76.48 (-23.52% desde los $100 iniciales)
 - **Posiciones:** AVAX +0.50, LTC +0.50
-- **Días corriendo:** 98 (desde 2026-07-17)
+- **Días corriendo:** 99 (desde 2026-07-17)
 
 | Fecha | Equity | Posiciones |
 |-------|--------|------------|
+| 2026-10-23 | $76.48 | AVAX +0.50, LTC +0.50 |
 | 2026-10-22 | $77.83 | AVAX +0.50, LTC +0.50 |
 | 2026-10-21 | $81.87 | AVAX +0.50, LTC +0.50 |
 | 2026-10-20 | $82.31 | AVAX +0.50, LTC +0.50 |
@@ -82,7 +83,6 @@ _Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-10-22 (tick automático vía GitHu
 | 2026-09-26 | $97.74 | AVAX +0.50, SOL +0.50 |
 | 2026-09-25 | $97.17 | AVAX +0.50, SOL +0.50 |
 | 2026-09-24 | $93.14 | AVAX +0.50, SOL +0.50 |
-| 2026-09-23 | $92.57 | AVAX +0.50, SOL +0.50 |
 
 ## Regla vigente
 
