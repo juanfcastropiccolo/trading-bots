@@ -1,11 +1,11 @@
 {
-  "last_run": "2026-10-25",
+  "last_run": "2026-10-26",
   "strategies": {
     "v4_voltarget": {
-      "equity": 89.2142,
+      "equity": 89.1974,
       "weights": {
         "BTC/USDT": 0.5,
-        "LTC/USDT": 0.335741
+        "BNB/USDT": 0.5
       },
       "history": [
         {
@@ -822,14 +822,23 @@
             "LTC/USDT": 0.335741
           },
           "ts": "2026-10-26T04:18:06+00:00"
+        },
+        {
+          "date": "2026-10-26",
+          "equity": 89.1974,
+          "weights": {
+            "BTC/USDT": 0.5,
+            "BNB/USDT": 0.5
+          },
+          "ts": "2026-10-27T04:36:43+00:00"
         }
       ]
     },
     "v4_ensemble": {
-      "equity": 75.5838,
+      "equity": 75.7719,
       "weights": {
-        "AVAX/USDT": 0.5,
-        "LTC/USDT": 0.5
+        "BNB/USDT": 0.5,
+        "AVAX/USDT": 0.5
       },
       "history": [
         {
@@ -1726,6 +1735,15 @@
             "LTC/USDT": 0.5
           },
           "ts": "2026-10-26T04:18:06+00:00"
+        },
+        {
+          "date": "2026-10-26",
+          "equity": 75.7719,
+          "weights": {
+            "BNB/USDT": 0.5,
+            "AVAX/USDT": 0.5
+          },
+          "ts": "2026-10-27T04:36:43+00:00"
         }
       ]
     }
