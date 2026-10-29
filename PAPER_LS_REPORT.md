@@ -1,6 +1,6 @@
 # Momentum Long/Short (perpetuos) — Paper Trading
 
-_Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-10-27 (tick automático vía GitHub Actions). Pesos con signo (− = short), funding real, costos 0.05% por lado, palanca 1x._
+_Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-10-28 (tick automático vía GitHub Actions). Pesos con signo (− = short), funding real, costos 0.05% por lado, palanca 1x._
 
 > **Disciplina de decisión:** el pase a real se evalúa contra los criterios
 > pre-fijados de VALIDACION_LS.md tras 4-6 semanas de paper — NO contra cuál
@@ -8,12 +8,13 @@ _Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-10-27 (tick automático vía GitHu
 
 ## V4 + voltarget (candidata principal — pasó los criterios ex-ante)
 
-- **Equity:** $89.71 (-10.29% desde los $100 iniciales)
+- **Equity:** $90.82 (-9.18% desde los $100 iniciales)
 - **Posiciones:** BNB +0.50, BTC +0.50
-- **Días corriendo:** 103 (desde 2026-07-17)
+- **Días corriendo:** 104 (desde 2026-07-17)
 
 | Fecha | Equity | Posiciones |
 |-------|--------|------------|
+| 2026-10-28 | $90.82 | BNB +0.50, BTC +0.50 |
 | 2026-10-27 | $89.71 | BNB +0.50, BTC +0.50 |
 | 2026-10-26 | $89.20 | BNB +0.50, BTC +0.50 |
 | 2026-10-25 | $89.21 | BTC +0.50, LTC +0.34 |
@@ -43,16 +44,16 @@ _Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-10-27 (tick automático vía GitHu
 | 2026-10-01 | $98.69 | AVAX +0.23, LTC +0.32 |
 | 2026-09-30 | $98.20 | AVAX +0.23, LTC +0.32 |
 | 2026-09-29 | $99.02 | AVAX +0.23, LTC +0.32 |
-| 2026-09-28 | $98.39 | AVAX +0.23, LTC +0.32 |
 
 ## V4 + ensemble (experimento secundario — falló criterio (c))
 
-- **Equity:** $75.78 (-24.22% desde los $100 iniciales)
+- **Equity:** $76.70 (-23.30% desde los $100 iniciales)
 - **Posiciones:** AVAX +0.50, BNB +0.50
-- **Días corriendo:** 103 (desde 2026-07-17)
+- **Días corriendo:** 104 (desde 2026-07-17)
 
 | Fecha | Equity | Posiciones |
 |-------|--------|------------|
+| 2026-10-28 | $76.70 | AVAX +0.50, BNB +0.50 |
 | 2026-10-27 | $75.78 | AVAX +0.50, BNB +0.50 |
 | 2026-10-26 | $75.77 | AVAX +0.50, BNB +0.50 |
 | 2026-10-25 | $75.58 | AVAX +0.50, LTC +0.50 |
@@ -82,7 +83,6 @@ _Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-10-27 (tick automático vía GitHu
 | 2026-10-01 | $94.06 | AVAX +0.50, LINK +0.50 |
 | 2026-09-30 | $93.80 | AVAX +0.50, LINK +0.50 |
 | 2026-09-29 | $96.74 | AVAX +0.50, LINK +0.50 |
-| 2026-09-28 | $95.65 | AVAX +0.50, LINK +0.50 |
 
 ## Regla vigente
 
