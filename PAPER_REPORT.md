@@ -1,20 +1,21 @@
 # Momentum Paper Trader — Reporte
 
-_Actualizado: 2026-10-30 (tick automático vía GitHub Actions)_
+_Actualizado: 2026-10-31 (tick automático vía GitHub Actions)_
 
 ## Estado actual
 
-- **Equity:** $100.35 (+0.35% desde los $100 iniciales)
+- **Equity:** $98.26 (-1.74% desde los $100 iniciales)
 - **Cash:** $0.00
 - **Posiciones abiertas:** BNB/USDT, BTC/USDT
-- **Target del día:** BTC/USDT, BNB/USDT
-- **Días corriendo:** 111 (desde 2026-07-12)
+- **Target del día:** BNB/USDT, BTC/USDT
+- **Días corriendo:** 112 (desde 2026-07-12)
 - **Pegadas / pérdidas:** 6 / 15
 
 ## Historial de equity
 
 | Fecha | Equity | Posiciones | Target |
 |-------|--------|------------|--------|
+| 2026-10-31 | $98.26 | BNB/USDT, BTC/USDT | BNB/USDT, BTC/USDT |
 | 2026-10-30 | $100.35 | BNB/USDT, BTC/USDT | BTC/USDT, BNB/USDT |
 | 2026-10-29 | $103.94 | BNB/USDT, BTC/USDT | BNB/USDT, BTC/USDT |
 | 2026-10-28 | $103.72 | BNB/USDT, BTC/USDT | BNB/USDT, BTC/USDT |
