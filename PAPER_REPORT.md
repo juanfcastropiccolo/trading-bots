@@ -1,20 +1,21 @@
 # Momentum Paper Trader — Reporte
 
-_Actualizado: 2026-11-05 (tick automático vía GitHub Actions)_
+_Actualizado: 2026-11-06 (tick automático vía GitHub Actions)_
 
 ## Estado actual
 
-- **Equity:** $98.51 (-1.49% desde los $100 iniciales)
-- **Cash:** $0.00
-- **Posiciones abiertas:** BNB/USDT, BTC/USDT
-- **Target del día:** BTC/USDT, BNB/USDT
-- **Días corriendo:** 117 (desde 2026-07-12)
-- **Pegadas / pérdidas:** 6 / 17
+- **Equity:** $93.80 (-6.20% desde los $100 iniciales)
+- **Cash:** $93.80
+- **Posiciones abiertas:** cash
+- **Target del día:** cash
+- **Días corriendo:** 118 (desde 2026-07-12)
+- **Pegadas / pérdidas:** 6 / 19
 
 ## Historial de equity
 
 | Fecha | Equity | Posiciones | Target |
 |-------|--------|------------|--------|
+| 2026-11-06 | $93.80 | cash | cash |
 | 2026-11-05 | $98.51 | BNB/USDT, BTC/USDT | BTC/USDT, BNB/USDT |
 | 2026-11-04 | $96.98 | BTC/USDT | BTC/USDT |
 | 2026-11-03 | $97.06 | cash | cash |
@@ -178,6 +179,8 @@ _Actualizado: 2026-11-05 (tick automático vía GitHub Actions)_
 - **2026-11-03** — SELL BNB/USDT (pérdida: equity $103.30 → $97.06)
 - **2026-11-04** — BUY BTC/USDT (equity $96.98)
 - **2026-11-05** — BUY BNB/USDT (equity $98.51)
+- **2026-11-06** — SELL BTC/USDT (pérdida: equity $96.98 → $93.80)
+- **2026-11-06** — SELL BNB/USDT (pérdida: equity $98.51 → $93.80)
 
 ## Regla vigente
 
