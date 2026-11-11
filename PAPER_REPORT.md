@@ -1,6 +1,6 @@
 # Momentum Paper Trader — Reporte
 
-_Actualizado: 2026-11-10 (tick automático vía GitHub Actions)_
+_Actualizado: 2026-11-11 (tick automático vía GitHub Actions)_
 
 ## Estado actual
 
@@ -8,13 +8,14 @@ _Actualizado: 2026-11-10 (tick automático vía GitHub Actions)_
 - **Cash:** $93.80
 - **Posiciones abiertas:** cash
 - **Target del día:** cash
-- **Días corriendo:** 122 (desde 2026-07-12)
+- **Días corriendo:** 123 (desde 2026-07-12)
 - **Pegadas / pérdidas:** 6 / 19
 
 ## Historial de equity
 
 | Fecha | Equity | Posiciones | Target |
 |-------|--------|------------|--------|
+| 2026-11-11 | $93.80 | cash | cash |
 | 2026-11-10 | $93.80 | cash | cash |
 | 2026-11-09 | $93.80 | cash | cash |
 | 2026-11-08 | $93.80 | cash | cash |
