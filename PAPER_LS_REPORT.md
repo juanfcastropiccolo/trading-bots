@@ -1,6 +1,6 @@
 # Momentum Long/Short (perpetuos) — Paper Trading
 
-_Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-11-11 (tick automático vía GitHub Actions). Pesos con signo (− = short), funding real, costos 0.05% por lado, palanca 1x._
+_Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-11-12 (tick automático vía GitHub Actions). Pesos con signo (− = short), funding real, costos 0.05% por lado, palanca 1x._
 
 > **Disciplina de decisión:** el pase a real se evalúa contra los criterios
 > pre-fijados de VALIDACION_LS.md tras 4-6 semanas de paper — NO contra cuál
@@ -10,10 +10,11 @@ _Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-11-11 (tick automático vía GitHu
 
 - **Equity:** $83.81 (-16.19% desde los $100 iniciales)
 - **Posiciones:** cash
-- **Días corriendo:** 118 (desde 2026-07-17)
+- **Días corriendo:** 119 (desde 2026-07-17)
 
 | Fecha | Equity | Posiciones |
 |-------|--------|------------|
+| 2026-11-12 | $83.81 | cash |
 | 2026-11-11 | $83.81 | cash |
 | 2026-11-10 | $83.81 | cash |
 | 2026-11-09 | $83.81 | cash |
@@ -43,16 +44,16 @@ _Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-11-11 (tick automático vía GitHu
 | 2026-10-16 | $92.53 | AVAX +0.21, LTC +0.31 |
 | 2026-10-15 | $93.33 | AVAX +0.21, LTC +0.31 |
 | 2026-10-14 | $92.42 | AVAX +0.21, LTC +0.31 |
-| 2026-10-13 | $93.75 | AVAX +0.21, LTC +0.31 |
 
 ## V4 + ensemble (experimento secundario — falló criterio (c))
 
-- **Equity:** $70.42 (-29.58% desde los $100 iniciales)
+- **Equity:** $69.78 (-30.22% desde los $100 iniciales)
 - **Posiciones:** AVAX +0.50
-- **Días corriendo:** 118 (desde 2026-07-17)
+- **Días corriendo:** 119 (desde 2026-07-17)
 
 | Fecha | Equity | Posiciones |
 |-------|--------|------------|
+| 2026-11-12 | $69.78 | AVAX +0.50 |
 | 2026-11-11 | $70.42 | AVAX +0.50 |
 | 2026-11-10 | $69.84 | AVAX +0.50 |
 | 2026-11-09 | $70.99 | AVAX +0.50 |
@@ -82,7 +83,6 @@ _Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-11-11 (tick automático vía GitHu
 | 2026-10-16 | $82.92 | AVAX +0.50, LINK +0.50 |
 | 2026-10-15 | $83.67 | AVAX +0.50, LINK +0.50 |
 | 2026-10-14 | $83.49 | AVAX +0.50, LINK +0.50 |
-| 2026-10-13 | $85.87 | AVAX +0.50, LINK +0.50 |
 
 ## Regla vigente
 
