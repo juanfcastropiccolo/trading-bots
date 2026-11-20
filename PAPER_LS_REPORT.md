@@ -1,6 +1,6 @@
 # Momentum Long/Short (perpetuos) — Paper Trading
 
-_Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-11-18 (tick automático vía GitHub Actions). Pesos con signo (− = short), funding real, costos 0.05% por lado, palanca 1x._
+_Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-11-19 (tick automático vía GitHub Actions). Pesos con signo (− = short), funding real, costos 0.05% por lado, palanca 1x._
 
 > **Disciplina de decisión:** el pase a real se evalúa contra los criterios
 > pre-fijados de VALIDACION_LS.md tras 4-6 semanas de paper — NO contra cuál
@@ -8,12 +8,13 @@ _Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-11-18 (tick automático vía GitHu
 
 ## V4 + voltarget (candidata principal — pasó los criterios ex-ante)
 
-- **Equity:** $84.80 (-15.20% desde los $100 iniciales)
+- **Equity:** $85.37 (-14.63% desde los $100 iniciales)
 - **Posiciones:** BTC -0.25, ETH -0.21
-- **Días corriendo:** 125 (desde 2026-07-17)
+- **Días corriendo:** 126 (desde 2026-07-17)
 
 | Fecha | Equity | Posiciones |
 |-------|--------|------------|
+| 2026-11-19 | $85.37 | BTC -0.25, ETH -0.21 |
 | 2026-11-18 | $84.80 | BTC -0.25, ETH -0.21 |
 | 2026-11-17 | $83.72 | BTC -0.25, ETH -0.21 |
 | 2026-11-16 | $83.79 | BTC -0.25, ETH -0.21 |
@@ -43,16 +44,16 @@ _Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-11-18 (tick automático vía GitHu
 | 2026-10-23 | $90.09 | BTC +0.50, LTC +0.34 |
 | 2026-10-22 | $91.06 | BTC +0.50, LTC +0.34 |
 | 2026-10-21 | $93.95 | BTC +0.50, LTC +0.34 |
-| 2026-10-20 | $93.37 | BTC +0.50, LTC +0.34 |
 
 ## V4 + ensemble (experimento secundario — falló criterio (c))
 
-- **Equity:** $65.42 (-34.58% desde los $100 iniciales)
+- **Equity:** $65.88 (-34.12% desde los $100 iniciales)
 - **Posiciones:** BTC -0.25, ETH -0.25
-- **Días corriendo:** 125 (desde 2026-07-17)
+- **Días corriendo:** 126 (desde 2026-07-17)
 
 | Fecha | Equity | Posiciones |
 |-------|--------|------------|
+| 2026-11-19 | $65.88 | BTC -0.25, ETH -0.25 |
 | 2026-11-18 | $65.42 | BTC -0.25, ETH -0.25 |
 | 2026-11-17 | $64.53 | BTC -0.25, ETH -0.25 |
 | 2026-11-16 | $64.59 | BTC -0.25, ETH -0.25 |
@@ -82,7 +83,6 @@ _Fase 3 de PLAN_FUTUROS.md. Actualizado: 2026-11-18 (tick automático vía GitHu
 | 2026-10-23 | $76.48 | AVAX +0.50, LTC +0.50 |
 | 2026-10-22 | $77.83 | AVAX +0.50, LTC +0.50 |
 | 2026-10-21 | $81.87 | AVAX +0.50, LTC +0.50 |
-| 2026-10-20 | $82.31 | AVAX +0.50, LTC +0.50 |
 
 ## Regla vigente
 
